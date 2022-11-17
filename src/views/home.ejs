@@ -7,10 +7,9 @@
 
   <link rel="stylesheet" href="/css/style.css">
 
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
-
-  <title>Test</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<title>Le calendrier de Margaux</title>
 </head>
 <body class="h-screen w-full flex flex-col justify-between bg-gradient-to-b from-white dark:from-gray-800 to-cyan-500 dark:to-gray-800">
 
@@ -28,13 +27,15 @@
   <script>
     const date = document.getElementById('calendar-date');
     const days = "<%= days %>";
+    const lastseen = "<%= lastseen %>";
+
 
     document.addEventListener('DOMContentLoaded', () => {
       if (JSON.parse(getItem("config")).firsTime) {
         animate(date, 1, +days, 2000);
         setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
       } else {
-        animate(date, +cookie.lastDate, +days, 4000);
+        animate(date, +lastseen, +days, 2000);
         setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
       }
     });

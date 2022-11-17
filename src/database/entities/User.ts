@@ -19,5 +19,17 @@ export class User {
     ammount_surprise: number = 0
 
     @Column()
-    loged_in_cookie_hash: string = ""
+    logged_in_cookie_hash: string = ""
+
+    @Column({
+        nullable: false,
+        default: 1,
+    })
+    lastdayconnection: number
+
+    @Column({
+        nullable: true,
+        default: 0,
+    })
+    ammount_redeemed: number
 }

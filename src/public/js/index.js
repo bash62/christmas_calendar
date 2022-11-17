@@ -1,3 +1,4 @@
+
 var cookie = {
   firstTime: true,
   lastDate: '01',
@@ -80,6 +81,9 @@ giftContainer.addEventListener('click', () => {
 giftContainer.addEventListener('animationend', () => {
   if (isActived) {
     giftContainer.style.display = 'none';
+    axios.post('redeem').then(res=>{
+      console.log(res);
+    })
   }
 });
 
@@ -88,6 +92,8 @@ gift.addEventListener('loopComplete', () => {
     gift.stop();
     giftContainer.classList.add('animate-fade-out');
     isFirstLoop = true;
+
+
   }
 
   if (isActived && !isFirstLoop) {
@@ -122,3 +128,4 @@ function animate(obj, initVal, lastVal, duration) {
   };
   window.requestAnimationFrame(step);
 }
+

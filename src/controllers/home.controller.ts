@@ -1,7 +1,7 @@
 import path from "path";
 import { app } from "../index";
 import { Route } from "../structures/route";
-
+var crypto = require('crypto');
 const axios = require('axios');
 
 
@@ -10,22 +10,28 @@ export default new Route("/")
 
   .get("/", async (req, res) => {
 
-    app.db.user.find().then((users) => {
-      console.log(users);
-    });
 
-    let getTheme = await getThemeFromApi();
-    console.log("first APi called");
-    while(getTheme == "404"){
-      console.log("API called again");
-      getTheme = await getThemeFromApi();
-    }
-    
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
+    const user = await app.db.user.findOneBy({ id: 1});
+    const isAuth = await checkCookies(req,user);
+
+    if(!isAuth){
+      //res.redirect("/login");
+      console.log("USER COOKIE DOES NOT MATCH");
+    }
+    console.log(user);
+
+    const reward = await app.db.rewards.findBy({ id: 1});
+    console.log(JSON.stringify(reward));
+
+
+
     res.render("home", {
       days,
+      lastseen: user.lastdayconnection,
       title: "Home",
-      theme: getTheme,
+      theme: "dark",//await getThemeFromApi(),
+      reward: reward,
     });
   })
   .get("/robot.txt", (req, res) => {
@@ -36,21 +42,66 @@ export default new Route("/")
   })
   .get("/site.webmanifest", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'site.webmanifest'))
+  })
+  .post("/redeem", async (req, res) => {
+    const days = new Date(Date.now()).getDate();
+    const user = await app.db.user.findOneBy({ id: 1});
+    const reward = await app.db.rewards.findOneBy({ id: 1});
+    const isAuth = await checkCookies(req,user);
+    if(isAuth){
+      console.log(reward);
+      if(reward.isRedeemed == false){
+
+        reward.isRedeemed = true;
+        user.ammount_redeemed = user.ammount_redeemed + 1;
+
+        
+        switch(reward.type){
+          case "surprise":
+            if(reward.caption == "chocolat"){
+              user.ammount_chocolat = user.ammount_chocolat + 1;
+            }
+            else {
+              user.ammount_surprise = user.ammount_surprise + 1;
+            }
+            break;
+        }
+        user.lastdayconnection = days;
+        await app.db.rewards.save(reward);
+        await app.db.user.save(user);
+
+
+      }
+    }
+
+    res.status(200);
   });
 
+  async function checkCookies(req,user){
+    let isAuth = false;
+    const cookie = req.headers.cookie
+    if(cookie){
+      const isAuthCookie = cookie.split(";").map((item) => {
+        const [key, value] = item.replace(/\s/g,"").split("=");
+        console.log(key,value)
+        if(key == "hash"){
+          if(value === user.logged_in_cookie_hash){
+            isAuth=true;
+          }
+        } 
+      });
+      console.log(isAuth);
+      return isAuth;
+    }
+
+
+  }
 
   async function getThemeFromApi(){
 
-    console.log("API CALLED");
 
     const date = new Date(Date.now());
     const url = process.env.IPGEOLOCATION_URL+"apiKey="+process.env.IPGEOLOCATION_API_KEY+"&location=Strasbourg";
-    //Get the location to know if theme is dark or not
-    console.log(date.getHours(),date.getMinutes());
-    //get the interval if it's in or not
-
-
-
 
     return axios.get(url)
     .then(function (response) {
@@ -62,9 +113,12 @@ export default new Route("/")
       const sunriseMinute = sunrise.split(":")[1];
       
       var startSunrise = new Date();
-      startSunrise.setHours(sunriseHour,sunriseMinute,0); // L'heure du lever du soleil
       var startSunset= new Date();
+
+      startSunrise.setHours(sunriseHour,sunriseMinute,0); // L'heure du lever du soleil
       startSunset.setHours(sunsetHour,sunsetMinute,0); // l'heure du coucher du soleil
+
+
       if(date >= startSunrise && date < startSunset){
         return "";
       }

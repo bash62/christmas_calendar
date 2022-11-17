@@ -10,10 +10,10 @@ export const app = new Server({
   session: {
     secret: process.env.SESSION_SECRET,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7
+      maxAge: 1000 * 60 * 60 * 24 * 31
     },
     saveUninitialized: true,
-    name: 'test',
+    name: 'sessionId',
     resave: true
   }
 });
