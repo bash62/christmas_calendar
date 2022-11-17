@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" class="<%= theme %> ">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+
+  <title>Test</title>
+</head>
+<body class="h-screen w-full flex flex-col justify-between bg-gradient-to-b from-white dark:from-gray-800 to-cyan-500 dark:to-gray-800">
+
+  <%- include('partials/header') %>
+
+  <main class="w-full h-2/4 px-8 flex items-center">
+    <section class="w-full h-2/3 flex justify-center items-center">
+      <div id="lottie-gift" class="w-48 animate"></div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+  
+  <script src="/js/index.js"></script>
+  <script>
+    const date = document.getElementById('calendar-date');
+    const days = "<%= days %>";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (JSON.parse(getItem("config")).firsTime) {
+        animate(date, 1, +days, 2000);
+        setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
+      } else {
+        animate(date, +cookie.lastDate, +days, 4000);
+        setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
+      }
+    });
+  </script>
+</body>
+</html>
