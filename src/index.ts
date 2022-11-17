@@ -2,6 +2,7 @@ import path from "path";
 import { Logger } from "./structures/logger";
 import { Server } from "./structures/server";
 import { Colors } from "./utils/colors";
+
 require('dotenv').config({path: path.join(process.cwd(), '.env')})
 
 export const app = new Server({

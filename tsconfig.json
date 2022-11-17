@@ -10,7 +10,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "sourceMap": false,
-    "declaration": true,
+    "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
