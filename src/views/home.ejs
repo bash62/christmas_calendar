@@ -9,13 +9,21 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script defer src="/js/loader.js"></script>
+
 <title>Le calendrier de Margaux</title>
 </head>
+
 <body class="h-screen w-full flex flex-col justify-between bg-gradient-to-b from-white dark:from-gray-800 to-cyan-500 dark:to-gray-800">
+  <div class="w-full h-full flex justify-center items-center bg-gradient-to-b from-cyan-500 dark:from-gray-800 to-cyan-800 dark:to-gray-800" id="loader-container" >
+    <div class="w-48" id="loader">
+
+    </div>
+  </div>
 
   <%- include('partials/header') %>
 
-  <main class="w-full h-2/4 flex items-center relative">
+  <main class="hidden flex w-full h-2/4  items-center relative">
     <% if (reward.type === 'chocolat') { %>  
       <%- include('includes/chocolat', {reward: reward}) %>
     <% } %>
@@ -38,6 +46,7 @@
     const lastseen = "<%= lastseen %>";
 
 
+    
     document.addEventListener('DOMContentLoaded', () => {
       if (JSON.parse(getItem("config")).firsTime) {
         animate(date, 1, +days, 2000);

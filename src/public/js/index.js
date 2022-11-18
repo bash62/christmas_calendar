@@ -91,26 +91,6 @@ giftContainer.addEventListener('animationend', () => {
   }
 });
 
-// gift.addEventListener('loopComplete', () => {
-//   if (isActived && isFirstLoop) {
-//     gift.stop();
-
-//     giftContainer.classList.add('animate-fade-out');
-//     rewardsContainer.classList.add('animate-fade-in');
-//     rewardsContainer.classList.remove('hidden');
-//     rewardsContainer.classList.add('flex');
-
-//     isFirstLoop = true;
-
-
-//   }
-
-//   if (isActived && !isFirstLoop) {
-//     isFirstLoop = true;
-//   }
-
-// });
-
 gift.addEventListener('enterFrame', (e) => {
   
   if(Math.floor(e.currentTime) == 41 && isActived){
@@ -153,3 +133,4 @@ function animate(obj, initVal, lastVal, duration) {
   window.requestAnimationFrame(step);
 }
 
+﻿
