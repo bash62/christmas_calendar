@@ -53,6 +53,7 @@ const lutin = bodymovin.loadAnimation({
 
 
 const giftContainer = document.getElementById('lottie-gift');
+const rewardsContainer = document.getElementById('rewards-container');
 let isActived = false;
 let isFirstLoop = false;
 
@@ -91,6 +92,10 @@ gift.addEventListener('loopComplete', () => {
   if (isActived && isFirstLoop) {
     gift.stop();
     giftContainer.classList.add('animate-fade-out');
+    rewardsContainer.classList.add('animate-fade-in');
+    rewardsContainer.classList.remove('hidden');
+    rewardsContainer.classList.add('flex');
+
     isFirstLoop = true;
 
 

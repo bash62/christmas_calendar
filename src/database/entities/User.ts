@@ -5,31 +5,41 @@ export class User {
     
     /** i want to create a database like --- User
         --- id | number
-        --- ammount_chocolat | number | default (0) < 6
-        --- ammount_surprise | number | default (0) < 7
+        --- amount_chocolat | number | default (0) < 6
+        --- amount_surprise | number | default (0) < 7
         --- loged_in_cookie_hash | string | 
     **/ 
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    ammount_chocolat: number = 0
+    @Column({
+        default: 0,
+        name: "amount_chocolat"
+    })
+    amountChocolat: number = 0
 
-    @Column()
-    ammount_surprise: number = 0
+    @Column({
+        default: 0,
+        name: "amount_surprise"
+    })
+    amountSurprise: number = 0
 
-    @Column()
-    logged_in_cookie_hash: string = ""
+    @Column({
+        name: "logged_in_cookie_hash"
+    })
+    loggedInCookieHash: string = ""
 
     @Column({
         nullable: false,
         default: 1,
+        name: "last_day_connection"
     })
-    lastdayconnection: number
+    lastDayConnection: number
 
     @Column({
         nullable: true,
         default: 0,
+        name: "amount_redeemed"
     })
-    ammount_redeemed: number
+    amountRedeemed: number
 }

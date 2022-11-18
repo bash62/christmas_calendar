@@ -1,3 +1,4 @@
+import { RewardType } from "../../types/reward.type"
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
@@ -20,10 +21,13 @@ export class Rewards {
     id: number
 
     @Column({
-        default: "message",
+        default: RewardType.message,
         nullable: true,
+        type: "enum",
+        enum: RewardType,
+        name: "type"
     })
-    type: string
+    type: RewardType
 
     @Column({
         default: "",

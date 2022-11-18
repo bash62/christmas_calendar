@@ -15,7 +15,15 @@
 
   <%- include('partials/header') %>
 
-  <main class="w-full h-2/4 px-8 flex items-center">
+  <main class="w-full h-2/4 flex items-center relative">
+    <% if (reward.type === 'chocolat') { %>  
+      <%- include('includes/chocolat', {reward: reward}) %>
+    <% } %>
+    
+    <% if (reward.type === 'message') { %>  
+      <%- include('includes/message', {reward: reward}) %>
+    <% } %>
+
     <section class="w-full h-2/3 flex justify-center items-center">
       <div id="lottie-gift" class="w-48 animate"></div>
     </section>

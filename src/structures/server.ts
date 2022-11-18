@@ -7,6 +7,7 @@ import { ServerOptions, SessionOptions } from "../types/server.type";
 import { Logger } from "./logger";
 import {AppDataSource} from "../database/data-source";
 import {Entities} from "../database/entities";
+import { fetchSunDate } from "../utils/fetch-sundate";
 export class Server {
 
   public app: express.Application;
@@ -28,9 +29,8 @@ export class Server {
       password: "root",
       database: "mago_database",
       synchronize: true,
-      logging: true,
+      logging: ["error"],
       entities: Entities,
-
     });
 
     this.app = express();
