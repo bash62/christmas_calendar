@@ -12,8 +12,21 @@ module.exports = {
         'fade-out': 'fade-out 0.2s ease-in-out',
         'fade-in-loader': 'fade-in-loader 0.5s ease-in',
         'fade-out-loader': 'fade-out-loader 0.5s ease-out',
+        'fade-in-blur': 'fade-in-blur 0.5s ease-in',
       },
       keyframes: {
+        'fade-in-blur': {
+          '0%': {
+            blur: {
+              sm: '0px',
+            }
+          },
+          '100%': {
+            blur: {
+              sm: '10px',
+            }
+          }
+        },
         'fade-in-loader' : {
           '0%': {
             opacity: 0,

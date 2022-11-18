@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const containers = document.querySelectorAll(['header', 'main', 'footer']);
         const loader_container = document.getElementById('loader-container');
+        const blur_container = document.getElementById('blur-container');
+;
         console.log(containers)
         containers.forEach(container => {
             console.log("container", container);

@@ -101,8 +101,13 @@ gift.addEventListener('enterFrame', (e) => {
     if(frameCounter == 4){
       rewardsContainer.classList.remove('hidden');
       rewardsContainer.classList.add('flex');
+      const containers = document.querySelectorAll(['header', 'footer']);
+      containers.forEach(container => {
+        container.classList.add('blur-sm');
+      });
       giftContainer.classList.add('animate-fade-out');
       rewardsContainer.classList.add('animate-fade-in');
+
       isFirstLoop = true;
       gift.stop();
     };
