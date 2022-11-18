@@ -56,6 +56,7 @@ const giftContainer = document.getElementById('lottie-gift');
 const rewardsContainer = document.getElementById('rewards-container');
 let isActived = false;
 let isFirstLoop = false;
+let frameCounter = 0;
 
 const gift = bodymovin.loadAnimation({
   wrapper: giftContainer,
@@ -66,12 +67,14 @@ const gift = bodymovin.loadAnimation({
 });
 
 gift.addEventListener('DOMLoaded', () => {
+  
   gift.playSegments([8, 44], true);
   gift.play();
 });
 
 giftContainer.addEventListener('click', () => {
   if (!isActived) {
+  
     gift.playSegments([2, 44], true);
     gift.setDirection(-1);
     gift.play();
@@ -88,26 +91,42 @@ giftContainer.addEventListener('animationend', () => {
   }
 });
 
-gift.addEventListener('loopComplete', () => {
-  if (isActived && isFirstLoop) {
-    gift.stop();
-    giftContainer.classList.add('animate-fade-out');
-    rewardsContainer.classList.add('animate-fade-in');
-    rewardsContainer.classList.remove('hidden');
-    rewardsContainer.classList.add('flex');
+// gift.addEventListener('loopComplete', () => {
+//   if (isActived && isFirstLoop) {
+//     gift.stop();
 
-    isFirstLoop = true;
+//     giftContainer.classList.add('animate-fade-out');
+//     rewardsContainer.classList.add('animate-fade-in');
+//     rewardsContainer.classList.remove('hidden');
+//     rewardsContainer.classList.add('flex');
+
+//     isFirstLoop = true;
 
 
-  }
+//   }
 
-  if (isActived && !isFirstLoop) {
-    isFirstLoop = true;
-  }
+//   if (isActived && !isFirstLoop) {
+//     isFirstLoop = true;
+//   }
 
-});
+// });
 
 gift.addEventListener('enterFrame', (e) => {
+  
+  if(Math.floor(e.currentTime) == 41 && isActived){
+    frameCounter++;
+    if(frameCounter == 3){
+      frameCounter++;
+    };
+    if(frameCounter == 4){
+      rewardsContainer.classList.remove('hidden');
+      rewardsContainer.classList.add('flex');
+      giftContainer.classList.add('animate-fade-out');
+      rewardsContainer.classList.add('animate-fade-in');
+      isFirstLoop = true;
+      gift.stop();
+    };
+  }
   if (Math.floor(e.currentTime) <= 10 && isActived) {
     gift.setSpeed(0.5);
   } else if (Math.floor(e.currentTime) <= 5 && isActived) {
