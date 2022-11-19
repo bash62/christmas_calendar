@@ -18,16 +18,16 @@
 <title>Le calendrier de Margaux</title>
 </head>
 
-<body class="h-screen w-full overflow-x-hidden overflow-hidden overflow-y-hidden flex flex-col justify-between relative body-radial-gradient ">
+<body class="h-screen w-full overflow-x-hidden overflow-hidden overflow-y-hidden flex flex-col justify-between relative body-radial-gradient">
 
-  <div class="w-full h-full flex justify-center items-center bg-gradient-to-b from-cyan-500 dark:from-gray-800 to-cyan-800 dark:to-gray-800" id="loader-container" >
+  <div class="w-full h-full flex justify-center items-center body-radial-gradient" id="loader-container" >
     <div class="w-48" id="loader">
 
     </div>
   </div>
 
   <div id="fullscreen-photo-container" class="hidden z-50 absolute h-full w-full bg-gray-500">
-    <p class="h-16 bg-black w-full top-0 text-white p-2 text-center"><%= reward.caption %></p>
+    <p id="fullscreen-photo-caption" class="bg-black w-full top-0 text-white p-2 text-center"></p>
     <img class="h-full w-full object-cover" id="fullscreen-photo" src="" alt="">
   </div>
 
@@ -84,7 +84,7 @@
 
   <%- include('partials/footer') %>
 
-  <div id="snow-container" style="filter: drop-shadow(0 0 10px white);" class="absolute w-full h-full overflow-hidden z-10"></div>
+  <div id="snow-container"  class="hidden absolute w-full h-full overflow-hidden z-10"></div>
   
   <script>
     const days = "<%= days %>";
@@ -109,7 +109,5 @@
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/gift.js"></script>
-
-  
 </body>
 </html>
