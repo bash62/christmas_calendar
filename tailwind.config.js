@@ -9,14 +9,15 @@ module.exports = {
     extend: {
       animation: {
         'fade-in': 'fade-in 0.2s ease-in-out',
+        'fade-in-long': 'fade-in 0.5s ease-in-out',
         'fade-out': 'fade-out 0.2s ease-in-out',
-        'fade-in-loader': 'fade-in-loader 0.5s ease-in',
-        'fade-out-loader': 'fade-out-loader 0.5s ease-out',
-        'fade-in-blur': 'fade-in-blur 0.5s ease-in',
+        'fade-in-loader': 'fade-in-loader 0.2s ease-in',
+        'fade-out-loader': 'fade-out-loader 0.2s ease-out',
+        'fade-in-blur': 'fade-in-blur 0.2s ease-in',
         'floating': 'floating 2s ease-in-out infinite',
         'floating-shadow': 'floating-shadow 1s ease-in-out infinite',
-        'scale-in': 'scale-in 0.5s ease-in',
-        'scale-out': 'scale-out 0.5s ease-out',
+        'scale-in': 'scale-in 0.2s ease-in',
+        'scale-out': 'scale-out 0.2s ease-out',
       },
       keyframes: {
         'scale-in': {
@@ -85,7 +86,7 @@ module.exports = {
         },
         'fade-in': {
           '0%': {
-            opacity: '1',
+            opacity: '0',
           },
           '100%': {
             opacity: '1',

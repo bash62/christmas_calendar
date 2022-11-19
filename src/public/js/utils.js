@@ -24,3 +24,43 @@ function animate(obj, initVal, lastVal, duration) {
   };
   window.requestAnimationFrame(step);
 }
+
+function displaySnow(quantity) {
+  addSnow(quantity * 5);
+}
+
+function removeSnow(quantity) {
+  const container = document.getElementById('snow-container');
+  for (let i = 0; i < quantity; i++) {
+    container.lastChild.classList.add('animate-fade-out');
+    container.removeChild(container.lastChild);
+  }
+}
+
+function addSnow(quantity) {
+  const container = document.getElementById('snow-container');
+  for (let i = 0; i < quantity; i++) {
+    const snowDiv = document.createElement('span');
+    snowDiv.classList.add('snow');
+    snowDiv.classList.add('absolute');
+    container.appendChild(snowDiv);
+    snowDiv.classList.add('animate-fade-in-long');
+  }
+}
+
+let t;
+let globalQuantity = 0;
+function updateSnow(day) {
+  globalQuantity = day;
+  clearTimeout(t);
+  t = setTimeout(() => {
+    const snows = document.querySelectorAll('.snow');
+    if (snows.length > day * 5) {
+      removeSnow(snows.length - (day * 5));
+    } else {
+      addSnow((day * 5) - snows.length);
+    }
+    clearTimeout(t);
+  }, 200);
+  
+}

@@ -84,7 +84,7 @@
 
   <%- include('partials/footer') %>
 
-  <div id="snow-container" class="absolute w-full h-full overflow-hidden z-10"></div>
+  <div id="snow-container" style="filter: drop-shadow(0 0 10px white);" class="absolute w-full h-full overflow-hidden z-10"></div>
   
   <script>
     const days = "<%= days %>";
@@ -104,11 +104,11 @@
       } else {
         cookie = JSON.parse(getItem("config"));
       }
+      displaySnow(+days);
     });
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/gift.js"></script>
-  <script src="/js/snow.js"></script>
 
   
 </body>

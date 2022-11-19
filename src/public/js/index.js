@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (rewardRect.top >= rewardContainerRect.top && rewardRect.bottom <= rewardContainerRect.bottom) {
           animate(date, +lastseen, +(reward.id.split('-')[1]), 2000);
+          updateSnow(+(reward.id.split('-')[1]));
           lastseen = (reward.id.split('-')[1])
         }
       })
