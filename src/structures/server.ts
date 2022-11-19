@@ -45,6 +45,7 @@ export class Server {
     this.app.use('/fonts', express.static(path.join(__dirname, '..', 'public', 'fonts')))
     this.app.use('/assets', express.static(path.join(__dirname, '..', 'public', 'assets')))
     this.app.use('/lottie-files', express.static(path.join(__dirname, '..', 'public', 'lottie-files')))
+    this.app.use('/videos', express.static(path.join(__dirname, '..', 'public', 'videos')))
 
   }
 

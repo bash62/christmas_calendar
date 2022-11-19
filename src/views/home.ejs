@@ -6,26 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/snow.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script defer src="/js/loader.js"></script>
+  <script defer src="/js/snow.js"></script>
 
 <title>Le calendrier de Margaux</title>
 </head>
 
-<body class="h-screen w-full flex flex-col justify-between bg-gradient-to-b from-white dark:from-gray-800 to-cyan-500 dark:to-gray-800">
+<body class="h-screen w-full overflow-x-hidden overflow-hidden overflow-y-hidden flex flex-col justify-between relative body-radial-gradient ">
+
   <div class="w-full h-full flex justify-center items-center bg-gradient-to-b from-cyan-500 dark:from-gray-800 to-cyan-800 dark:to-gray-800" id="loader-container" >
     <div class="w-48" id="loader">
 
     </div>
   </div>
 
+  <div id="fullscreen-photo-container" class="hidden z-50 absolute h-full w-full bg-gray-500">
+    <p class="h-16 bg-black w-full top-0 text-white p-2 text-center"><%= reward.caption %></p>
+    <img class="h-full w-full object-cover" id="fullscreen-photo" src="" alt="">
+  </div>
+
+  <div id="escape-reward-screen" class="hidden z-50 absolute bottom-0 w-full">
+    <img id="close-button" class="absolute rounded-full bg-white p-4 bottom-0 mb-16 left-1/2 -translate-x-1/2" src="/assets/close-button.svg" alt="">
+  </div>
+
 
 
   <%- include('partials/header') %>
 
-  <main class=" hidden flex w-full h-2/4  items-center relative">
+  <main class="hidden flex w-full h-2/4  items-center relative">
     <% if (reward.type === 'chocolat') { %>  
       <%- include('includes/chocolat', {reward: reward}) %>
     <% } %>
@@ -36,6 +48,32 @@
 
     <% if (reward.type === 'coupon') { %>  
       <%- include('includes/coupon', {reward: reward}) %>
+    <% } %>
+
+    <% if (reward.type === 'surprise') { %>  
+      <%- include('includes/surprise', {reward: reward}) %>
+    <% } %>
+
+    <% if (reward.type === 'photo') { %>  
+      <%- include('includes/photo', {reward: reward}) %>
+      <script>
+        const photo = document.querySelector('#photo');
+        photo.addEventListener('click', () => {
+          if (reward.style.scale !== '0.5') {
+            fullscreenContainer.classList.remove('hidden');
+            fullscreenPhoto.src = photoUrl
+            buttonContainer.classList.add('hidden');
+          }
+        })
+      </script>
+    <% } %>
+
+    <% if (reward.type === 'video') { %>  
+      <%- include('includes/video', {reward: reward}) %>
+    <% } %>
+
+    <% if (reward.type === 'rebus') { %>  
+      <%- include('includes/rebus', {reward: reward}) %>
     <% } %>
 
     <section class="w-full h-2/3 flex justify-center items-center">
@@ -50,8 +88,6 @@
     const date = document.getElementById('calendar-date');
     const days = "<%= days %>";
     const lastseen = "<%= lastseen %>";
-
-
     
     document.addEventListener('DOMContentLoaded', () => {
       if (JSON.parse(getItem("config")).firsTime) {
@@ -61,7 +97,54 @@
         animate(date, +lastseen, +days, 2000);
         setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
       }
+
+
+      const buttonContainer = document.getElementById('escape-reward-screen');
+      const button = document.getElementById('close-button');
+      const reward = document.getElementById('reward');
+      const containers = document.querySelectorAll(['header', 'footer']);
+
+
+      
+      const photoUrl = "<%= reward.path %>";
+
+      const fullscreenContainer = document.getElementById('fullscreen-photo-container');
+      const fullscreenPhoto = document.getElementById('fullscreen-photo');
+
+      fullscreenContainer.addEventListener('click', () => {
+        fullscreenContainer.classList.add('hidden');
+        buttonContainer.classList.remove('hidden');
+      });
+
+      button.addEventListener('click', () => {
+        containers.forEach(container => {
+          container.classList.remove('blur-sm');
+        });
+        buttonContainer.classList.add('hidden');
+        if (!reward.classList.contains('video-container')) {
+          reward.classList.add('animate-scale-out');
+          reward.classList.remove('animate-scale-in');
+          reward.style.scale = 0.5;
+        }
+      });
+
+      
+
+      reward.addEventListener('click', () => {
+        console.log(reward.style.scale);
+        if (reward.style.scale === '0.5') {
+          reward.classList.add('animate-scale-in');
+          reward.classList.remove('animate-scale-out');
+          buttonContainer.classList.remove('hidden');
+          containers.forEach(container => {
+            container.classList.toggle('blur-sm');
+          })
+          reward.style.scale = 1;
+        }
+      })
     });
   </script>
+
+  
 </body>
 </html>

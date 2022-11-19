@@ -1,5 +1,5 @@
 <section id="rewards-container" class="hidden absolute h-full w-full py-12 px-4 flex items-center justify-center ">
-  <div class="w-full h-4/5 rounded-xl grid grid-rows-4 grid-cols-7 overflow-hidden">
+  <div id="reward" class="w-full h-48 rounded-xl grid grid-rows-4 grid-cols-7 overflow-hidden">
     <div class="row-start-1 row-span-4 col-start-1 col-span-7">
       <img class="h-full w-full" src="/assets/coupon.svg" alt="coupon">
     </div>
@@ -20,18 +20,48 @@
 
     <div class="row-start-4 row-span-1 col-span-5 col-start-1 flex items-center justify-start px-4 space-x-6 pb-1">
 
-      <div class="left flex flex-col items-start justify-center">
+      <div class="flex flex-col items-start justify-center">
         <p class="text-slate-800  font-mono font-extrabold text-sm uppercase ">INDEF.</p>
         <p class="text-gray-500  font-mono font-bold text-xs uppercase ">Validité</p>
       </div>
 
-      <div class="left flex flex-col items-start justify-center  ">
+      <div class="flex flex-col items-start justify-center  ">
         <p class="text-slate-800  font-mono font-extrabold text-sm uppercase ">00:10</p>
         <p class="text-gray-500  font-mono font-bold text-xs uppercase ">Durée</p>
       </div>
-
     </div>
 
+    <div class="row-start-1 row-span-1 col-start-6 col-span-2 flex justify-center items-center pt-1 pr-4">
+      <img class="w-12" src="/assets/eye.svg" alt="" srcset="">
+    </div>
+
+    <div class="row-start-2 row-span-1 col-start-6 col-span-2 flex justify-center items-center pt-1 pr-4">
+      <% if (!reward.isCouponClaimed) { %>
+        <p class="text-red-500 font-bold text-lg">EXPIRE</p>
+      <% } else { %>
+        <p class="text-green-600 font-bold text-lg">VALIDE</p>
+      <% } %>
+    </div>
+
+    <div class="row-start-3 row-span-2 col-start-6 col-span-2 flex justify-center items-center pt-1 pr-4">
+      <img id="qrcode" class="w-20" src="" alt="">
+    </div>
 
   </div>
 </section>
+
+<script>
+  axios.get(`/qrcode/<%= reward.id %>`)
+    .then(function (response) {
+      // handle success
+      const qrcode = document.getElementById('qrcode');
+      qrcode.src = response.data;
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+</script>

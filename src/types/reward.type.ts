@@ -5,4 +5,5 @@ export enum RewardType {
   photo = "photo",
   message = "message",
   chocolat = "chocolat",
+  rebus = "rebus",
 }

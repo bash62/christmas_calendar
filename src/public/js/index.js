@@ -102,10 +102,13 @@ gift.addEventListener('enterFrame', (e) => {
       rewardsContainer.classList.remove('hidden');
       rewardsContainer.classList.add('flex');
       const containers = document.querySelectorAll(['header', 'footer']);
+      const buttonContainer = document.getElementById('escape-reward-screen');
+      buttonContainer.classList.remove('hidden');
+
       containers.forEach(container => {
         container.classList.add('blur-sm');
       });
-      giftContainer.classList.add('animate-fade-out');
+      giftContainer.classList.add('animate-fade-in');
       rewardsContainer.classList.add('animate-fade-in');
 
       isFirstLoop = true;
@@ -137,5 +140,3 @@ function animate(obj, initVal, lastVal, duration) {
   };
   window.requestAnimationFrame(step);
 }
-
-﻿

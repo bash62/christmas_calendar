@@ -21,7 +21,7 @@ export default new Route("/")
     }
     console.log(user);
 
-    const reward = await app.db.rewards.findOneBy({ id: 2 });
+    const reward = await app.db.rewards.findOneBy({ id: 1 });
     console.log(JSON.stringify(reward));
 
     res.render("home", {
@@ -74,8 +74,9 @@ export default new Route("/")
 
     res.status(200);
   })
-  .get("/qrcode", (req, res) => {
-    const url = "192.168.1.53:3005/coupons/1";
+  .get("/qrcode/:id", (req, res) => {
+    const url = "192.168.1.91:3005/coupons/1";
+    
 
     // If the input is null return "Empty Data" error
     //if (url.length === 0) res.send("Empty Data!");
@@ -84,12 +85,15 @@ export default new Route("/")
     // It shall be returned as a png image format
     // In case of an error, it will save the error inside the "err" variable and display it
     
-    qr.toDataURL(url, (err, src) => {
+    qr.toDataURL(url,{
+      margin: 2,
+      color: {
+        dark:"#000000",
+        light:"#d3d3d3"
+      }
+    }, (err, src) => {
         if (err) res.send("Error occured");
-
-        console.log(src);
-        // Let us return the QR code image as our response and set it to be the source used in the webpage
-        return src;
+        res.send(src);
     });
 });
 

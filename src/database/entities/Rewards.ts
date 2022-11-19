@@ -67,4 +67,10 @@ export class Rewards {
     })
     isRedeemed: boolean
 
+    @Column({
+        nullable: false,
+        default: false,
+    })
+    isCouponClaimed: boolean
+
 }
