@@ -1,8 +1,9 @@
-const body = document.querySelector('body');
-
-for (let i = 0; i < 100; i++) {
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('snow-container');
+  for (let i = 0; i < +days * 5; i++) {
     const snowDiv = document.createElement('span');
     snowDiv.classList.add('snow');
     snowDiv.classList.add('absolute');
-    body.appendChild(snowDiv);
-}
+    container.appendChild(snowDiv);
+  }
+});

@@ -13,7 +13,6 @@
 
   <script src="/js/utils.js"></script>
   <script defer src="/js/loader.js"></script>
-  <!-- <script defer src="/js/snow.js"></script> -->
   <script defer src="/js/animations.js"></script>
 
 <title>Le calendrier de Margaux</title>
@@ -38,7 +37,7 @@
 
   <%- include('partials/header') %>
 
-  <main class="hidden flex-col w-full h-2/4 relative">
+  <main class="hidden flex-col w-full h-2/4 relative z-20">
     <div id="rewards-container" class="<%= reward.isRedeemed? 'flex' : 'hidden'%>  py-10 w-full flex-col items-center overflow-y-scroll overflow-x-hidden snap-y snap-mandatory">
       <% for (let i = 0; i < rewards.length; i++) { 
         let reward = rewards[i];
@@ -84,6 +83,8 @@
   </main>
 
   <%- include('partials/footer') %>
+
+  <div id="snow-container" class="absolute w-full h-full overflow-hidden z-10"></div>
   
   <script>
     const days = "<%= days %>";
@@ -107,6 +108,7 @@
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/gift.js"></script>
+  <script src="/js/snow.js"></script>
 
   
 </body>
