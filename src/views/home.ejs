@@ -37,48 +37,58 @@
 
   <%- include('partials/header') %>
 
-  <main class="hidden flex w-full h-2/4  items-center relative">
-    <% if (reward.type === 'chocolat') { %>  
-      <%- include('includes/chocolat', {reward: reward}) %>
+  <main class="hidden flex flex-col w-full h-2/4 items-center space-y-24 py-12 overflow-y-scroll overflow-x-hidden snap-y snap-mandatory">
+
+    <% for (let i = 0; i < rewards.length; i++) { 
+      let reward = rewards[i];
+      let isToday = reward.day === +days;
+      console.log(isToday);
+      if (reward.isRedeemed || isToday) { %>
+        <% if (reward.type === 'chocolat') { %>  
+          <%- include('includes/chocolat', {reward: reward, isToday: isToday}) %>
+        <% } %>
+        
+        <% if (reward.type === 'message') { %>  
+          <%- include('includes/message', {reward: reward, isToday: isToday}) %>
+        <% } %>
+
+        <% if (reward.type === 'coupon') { %>  
+          <%- include('includes/coupon', {reward: reward, isToday: isToday}) %>
+        <% } %>
+        
+        <% if (reward.type === 'surprise') { %>  
+          <%- include('includes/surprise', {reward: reward, isToday: isToday}) %>
+        <% } %>
+
+        <% if (reward.type === 'photo') { %>  
+          <%- include('includes/photo', {reward: reward, isToday: isToday}) %>
+          <script>
+            const photo = document.querySelector('#photo');
+            photo.addEventListener('click', () => {
+              if (reward.style.scale !== '0.5') {
+                fullscreenContainer.classList.remove('hidden');
+                fullscreenPhoto.src = photoUrl
+                buttonContainer.classList.add('hidden');
+              }
+            })
+          </script>
+        <% } %>
+
+        <% if (reward.type === 'video') { %>  
+          <%- include('includes/video', {reward: reward, isToday: isToday}) %>
+        <% } %>
+        
+        <% if (reward.type === 'rebus') { %>  
+          <%- include('includes/rebus', {reward: reward, isToday: isToday}) %>
+        <% } %>
+      <% } %>
     <% } %>
+
     
-    <% if (reward.type === 'message') { %>  
-      <%- include('includes/message', {reward: reward}) %>
-    <% } %>
 
-    <% if (reward.type === 'coupon') { %>  
-      <%- include('includes/coupon', {reward: reward}) %>
-    <% } %>
-
-    <% if (reward.type === 'surprise') { %>  
-      <%- include('includes/surprise', {reward: reward}) %>
-    <% } %>
-
-    <% if (reward.type === 'photo') { %>  
-      <%- include('includes/photo', {reward: reward}) %>
-      <script>
-        const photo = document.querySelector('#photo');
-        photo.addEventListener('click', () => {
-          if (reward.style.scale !== '0.5') {
-            fullscreenContainer.classList.remove('hidden');
-            fullscreenPhoto.src = photoUrl
-            buttonContainer.classList.add('hidden');
-          }
-        })
-      </script>
-    <% } %>
-
-    <% if (reward.type === 'video') { %>  
-      <%- include('includes/video', {reward: reward}) %>
-    <% } %>
-
-    <% if (reward.type === 'rebus') { %>  
-      <%- include('includes/rebus', {reward: reward}) %>
-    <% } %>
-
-    <section class="w-full h-2/3 flex justify-center items-center">
+    <!--<section class="w-full h-2/3 flex justify-center items-center">
       <div id="lottie-gift" class="w-48 animate"></div>
-    </section>
+    </section>-->
   </main>
 
   <%- include('partials/footer') %>
@@ -101,7 +111,7 @@
 
       const buttonContainer = document.getElementById('escape-reward-screen');
       const button = document.getElementById('close-button');
-      const reward = document.getElementById('reward');
+      const reward = document.querySelector('.today-reward');
       const containers = document.querySelectorAll(['header', 'footer']);
 
 

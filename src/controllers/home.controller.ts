@@ -24,12 +24,15 @@ export default new Route("/")
     const reward = await app.db.rewards.findOneBy({ id: 1 });
     console.log(JSON.stringify(reward));
 
+    const rewards = await app.db.rewards.find();
+
     res.render("home", {
       days,
       lastseen: user.lastDayConnection,
       title: "Home",
       theme: await fetchSunDate(+days),
       reward: reward,
+      rewards: rewards,
     });
   })
   .get("/robot.txt", (req, res) => {

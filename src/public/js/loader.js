@@ -8,7 +8,6 @@ const animation = bodymovin.loadAnimation({
   path: 'https://assets7.lottiefiles.com/packages/lf20_s6vm71il.json',
 });
 
-
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const containers = document.querySelectorAll(['header', 'main', 'footer']);

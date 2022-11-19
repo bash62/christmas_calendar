@@ -53,7 +53,7 @@ const lutin = bodymovin.loadAnimation({
 
 
 const giftContainer = document.getElementById('lottie-gift');
-const rewardsContainer = document.getElementById('rewards-container');
+const rewardsContainer = document.querySelector('.today-container');
 let isActived = false;
 let isFirstLoop = false;
 let frameCounter = 0;

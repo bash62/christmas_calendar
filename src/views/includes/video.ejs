@@ -1,8 +1,5 @@
-<section id="rewards-container" class="z-30 absolute hidden flex h-full px-8 pb-12 w-full justify-center items-center">
-  <div id="reward" class="video-container h-48 w-full p-2 bg-black bg-opacity-30 rounded-xl flex items-center">
+<section id="rewards-container-<%= reward.id %>  " class="<%= isToday? 'today-container' : '' %> z-30 absolute hidden flex h-full px-8 pb-12 w-full justify-center items-center snap-always snap-center">
+  <div id="reward-<%= reward.id %> " class="<%= isToday? 'today-reward' : '' %> video-container h-48 w-full p-2 bg-black bg-opacity-30 rounded-xl flex items-center">
     <iframe class="rounded-lg" width="100%" height="100%" src="https://www.youtube.com/embed/NrERP-zBv1k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
 </section>
-
-
-<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
