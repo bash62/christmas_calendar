@@ -21,7 +21,7 @@ export default new Route("/")
     }
     console.log(user);
 
-    const reward = await app.db.rewards.findOneBy({ id: 1 });
+    const reward = await app.db.rewards.findOneBy({ id: +days });
     console.log(JSON.stringify(reward));
 
     const rewards = await app.db.rewards.find();
@@ -47,12 +47,13 @@ export default new Route("/")
   .get("/site.webmanifest", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'site.webmanifest'))
   })
-  .post("/redeem", async (req, res) => {
+  .post("/reedem", async (req, res) => {
     const days = new Date(Date.now()).getDate();
     const user = await app.db.user.findOneBy({ id: 1});
-    const reward = await app.db.rewards.findOneBy({ id: 1});
+    const reward = await app.db.rewards.findOneBy({ id: +days });
     const isAuth = await checkCookies(req,user);
-    if(isAuth){
+    console.log("isAuth", isAuth);
+    if(!isAuth){
       console.log(reward);
       if(reward.isRedeemed == false){
 

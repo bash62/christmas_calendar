@@ -1,9 +1,20 @@
-<section id="rewards-container-<%= reward.id %> " class="<%= isToday? 'today-container' : '' %> absolute hidden h-full w-full py-12 px-4 flex items-center justify-center snap-always snap-center">
-  <div id="reward-<%= reward.id %>" class="<%= isToday? 'today-reward' : '' %> w-48 h-48 rounded-t-xl relative">
-    <img id="photo" class="w-full h-40 object-cover rounded-t-xl" src="<%= reward.path %>" alt="" srcset="">
+<section id="rewards-container-<%= reward.id %> " class="<%= isToday? 'today-container' : '' %> h-full w-full my-10 px-4 flex items-center justify-center snap-always snap-center">
+  <div id="reward-<%= reward.id %>" class="<%= isToday? 'today-reward' : '' %> reward w-48 h-48 rounded-t-xl relative">
+    <img id="photo" class="w-full h-40 object-cover rounded-t-xl" src="/assets/<%= reward.path %>" alt="" srcset="">
     <div class="absolute w-48 rounded-b-xl bottom-0 h-8 bg-black">
       <p class="p-2 w-full h-full text-xs text-white"><%= reward.caption %></p>
     </div>
   </div>
  
 </section>
+
+<script>
+  const photo = document.querySelector('#photo');
+  photo.addEventListener('click', () => {
+    if (document.getElementById("reward-<%= reward.id %>").style.scale !== '0.5') {
+      document.getElementById('fullscreen-photo-container').classList.remove('hidden');
+      document.getElementById('fullscreen-photo').src = `/assets/<%= reward.path %>`;
+      document.getElementById('close-button-container').classList.add('hidden');
+    }
+  })
+</script>

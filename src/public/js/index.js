@@ -1,142 +1,103 @@
-
-var cookie = {
-  firstTime: true,
-  lastDate: '01',
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-  if (!getItem("config")) {
-    setItem("config", JSON.stringify(cookie));
+  const date = document.getElementById('calendar-date');
+  
+  if (JSON.parse(getItem("config")).firsTime) {
+    animate(date, 1, +days, 2000);
+    setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
   } else {
-    cookie = JSON.parse(getItem("config"));
+    animate(date, +lastseen, +days, 2000);
+    setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
   }
-});
 
-function setItem(name, value) {
-  localStorage.setItem(name, value);
-}
+  const rewards = document.querySelectorAll('.reward');
+  const todayReward = document.querySelector('.today-reward');
 
-function getItem(name) {
-  return localStorage.getItem('config');
-}
+  const fullscreenContainer = document.getElementById('fullscreen-photo-container');
 
-const leftGarlandContainer = document.getElementById('lottie-left');
-const rightGarlandContainer = document.getElementById('lottie-right');
+  const rewardContainer = document.querySelector('#rewards-container');
 
-const leftGarland = bodymovin.loadAnimation({
-  wrapper: leftGarlandContainer,
-  animType: 'svg',
-  loop: true,
-  autoplay: true,
-  speed: 0.4,
-  path: 'https://assets6.lottiefiles.com/packages/lf20_a1rtrm7c.json',
-});
+  const buttonContainer = document.getElementById('close-button-container');
+  const button = document.getElementById('close-button');
+  const containers = document.querySelectorAll(['header', 'footer']);
 
-const rightGarland = bodymovin.loadAnimation({
-  wrapper: rightGarlandContainer,
-  animType: 'svg',
-  loop: true,
-  autoplay: true,
-  speed: 0.4,
-  path: 'https://assets6.lottiefiles.com/packages/lf20_a1rtrm7c.json',
-});
+  let clickedRewardId = todayReward.id;
 
-const lutinContainer = document.getElementById('lottie-lutin');
-
-const lutin = bodymovin.loadAnimation({
-  wrapper: lutinContainer,
-  animType: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'https://assets10.lottiefiles.com/packages/lf20_any3s17u.json',
-});
-
-
-const giftContainer = document.getElementById('lottie-gift');
-const rewardsContainer = document.querySelector('.today-container');
-let isActived = false;
-let isFirstLoop = false;
-let frameCounter = 0;
-
-const gift = bodymovin.loadAnimation({
-  wrapper: giftContainer,
-  animType: 'svg',
-  loop: true,
-  autoplay: false,
-  path: 'https://assets9.lottiefiles.com/packages/lf20_iqcpihc0.json',
-});
-
-gift.addEventListener('DOMLoaded', () => {
-  
-  gift.playSegments([8, 44], true);
-  gift.play();
-});
-
-giftContainer.addEventListener('click', () => {
-  if (!isActived) {
-  
-    gift.playSegments([2, 44], true);
-    gift.setDirection(-1);
-    gift.play();
-    isActived = true;
-  }
-});
-
-giftContainer.addEventListener('animationend', () => {
-  if (isActived) {
-    giftContainer.style.display = 'none';
-    axios.post('redeem').then(res=>{
-      console.log(res);
-    })
-  }
-});
-
-gift.addEventListener('enterFrame', (e) => {
-  
-  if(Math.floor(e.currentTime) == 41 && isActived){
-    frameCounter++;
-    if(frameCounter == 3){
-      frameCounter++;
-    };
-    if(frameCounter == 4){
-      rewardsContainer.classList.remove('hidden');
-      rewardsContainer.classList.add('flex');
-      const containers = document.querySelectorAll(['header', 'footer']);
-      const buttonContainer = document.getElementById('escape-reward-screen');
-      buttonContainer.classList.remove('hidden');
-
-      containers.forEach(container => {
-        container.classList.add('blur-sm');
-      });
-      giftContainer.classList.add('animate-fade-in');
-      rewardsContainer.classList.add('animate-fade-in');
-
-      isFirstLoop = true;
-      gift.stop();
-    };
-  }
-  if (Math.floor(e.currentTime) <= 10 && isActived) {
-    gift.setSpeed(0.5);
-  } else if (Math.floor(e.currentTime) <= 5 && isActived) {
-    gift.setSpeed(0.2);
-  }
-});
-
-function animate(obj, initVal, lastVal, duration) {
-  let startTime = null;
-  let currentTime = Date.now();
-
-  const step = (currentTime ) => {
-    if (!startTime) {
-      startTime = currentTime ;
-    }
-    const progress = Math.min((currentTime - startTime)/ duration, 1);
-    obj.innerHTML = (Math.floor(progress * (lastVal - initVal) + initVal)).toString().padStart(2, '0');
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
+  rewards.forEach(reward => {
+    reward.style.scale = '0.5';
+    if (reward.classList.contains('video-container')) {
+      const videoBtn = document.querySelector(`#video-button-${reward.id.split('-')[1]}`);
+      videoBtn.addEventListener('click', () => {
+        videoBtn.classList.add('hidden');
+        if (reward.style.scale === '0.5') {
+          clickedRewardId = reward.id;
+          reward.classList.add('animate-scale-in');
+          reward.classList.remove('animate-scale-out');
+          reward.classList.add('clicked-reward');
+          buttonContainer.classList.remove('hidden');
+          containers.forEach(container => {
+            container.classList.toggle('blur-sm');
+          })
+          reward.style.scale = 1;
+          isRewardOpen = true;
+          rewardContainer.classList.add('overflow-y-hidden');
+          rewardContainer.classList.remove('overflow-y-scroll');
+        }
+      })
     } else {
-      window.cancelAnimationFrame(window.requestAnimationFrame(step));
+      reward.addEventListener('click', () => {
+        if (reward.style.scale === '0.5') {
+          clickedRewardId = reward.id;
+          reward.classList.add('animate-scale-in');
+          reward.classList.remove('animate-scale-out');
+          reward.classList.add('clicked-reward');
+          buttonContainer.classList.remove('hidden');
+          containers.forEach(container => {
+            container.classList.toggle('blur-sm');
+          })
+          reward.style.scale = 1;
+          isRewardOpen = true;
+          rewardContainer.classList.add('overflow-y-hidden');
+          rewardContainer.classList.remove('overflow-y-scroll');
+        }
+      })
     }
-  };
-  window.requestAnimationFrame(step);
-}
+  })
+
+  rewardContainer.scrollTo(0, rewardContainer.scrollHeight)
+  rewardContainer.addEventListener('scroll', (e) => {
+    const rewards = document.querySelectorAll('.reward');
+      rewards.forEach(reward => {
+        const rewardRect = reward.getBoundingClientRect();
+        const rewardContainerRect = rewardContainer.getBoundingClientRect();
+
+        if (rewardRect.top >= rewardContainerRect.top && rewardRect.bottom <= rewardContainerRect.bottom) {
+          animate(date, +lastseen, +(reward.id.split('-')[1]), 2000);
+          lastseen = (reward.id.split('-')[1])
+        }
+      })
+  }, false)
+
+  button.addEventListener('click', () => {
+    const clickedReward = document.getElementById(`${clickedRewardId}`);
+    if (clickedReward.classList.contains('video-container')) {
+      const videoBtn = document.querySelector(`#video-button-${clickedReward.id.split('-')[1]}`);
+      videoBtn.classList.remove('hidden');
+    }
+
+    containers.forEach(container => {
+      container.classList.remove('blur-sm');
+    });
+    buttonContainer.classList.add('hidden');
+    clickedReward.classList.add('animate-scale-out');
+    clickedReward.classList.remove('animate-scale-in');
+    clickedReward.style.scale = 0.5;
+    isRewardOpen = false;
+    rewardContainer.classList.remove('overflow-y-hidden');
+    rewardContainer.classList.add('overflow-y-scroll');
+  });
+
+  fullscreenContainer.addEventListener('click', () => {
+    fullscreenContainer.classList.add('hidden');
+    buttonContainer.classList.remove('hidden');
+  });
+});

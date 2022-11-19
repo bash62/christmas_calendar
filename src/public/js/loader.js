@@ -1,13 +1,3 @@
-const loader = document.getElementById('loader');
-
-const animation = bodymovin.loadAnimation({
-  wrapper: loader,
-  animType: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'https://assets7.lottiefiles.com/packages/lf20_s6vm71il.json',
-});
-
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const containers = document.querySelectorAll(['header', 'main', 'footer']);
@@ -15,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         containers.forEach(container => {
             container.classList.remove('hidden');
+            container.classList.add('flex');
             container.classList.add('animate-fade-in-loader');
         });
         loader_container.classList.add('hidden');
@@ -22,7 +13,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }, Math.random() * 1000 + 2500);
 });
-
-
-
-
