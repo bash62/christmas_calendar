@@ -3,27 +3,56 @@ import { RewardType } from "../types/reward.type";
 import { app } from "../index";
 import { Route } from "../structures/route";
 import { fetchSunDate } from "../utils/fetch-sundate";
-const qr = require("qrcode");
-var crypto = require('crypto');
-const axios = require('axios');
+import {encode, decode} from "../utils/base64";
 
+const qr = require("qrcode");
+const axios = require('axios');
+const bcrypt = require('bcrypt');
 
 export default new Route("/")
+
+  .get("/login",async (req, res) => {
+    if(await checkCookies(req)){
+      res.redirect("/");
+    }
+    else {
+      const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
+      res.render("login", {
+        theme: await fetchSunDate(+days),
+      });
+    }
+  })
+  .post("/login", async (req, res) => {
+    const { password } = req.body;
+    const user = await app.db.user.findOneBy({ id: 1});
+    const match = await bcrypt.compare( password,user.loggedInCookieHash)
+
+    if(match){
+
+      res.cookie("hash", encode(user.loggedInCookieHash), { maxAge: 900000, httpOnly: true });
+      return res.redirect("/");
+
+    }
+    else{
+      return res.sendStatus(403);
+
+    }
+  })
   .get("/", async (req, res) => {
+
+    if(!(await checkCookies(req))){
+      
+      return res.redirect("/login");
+    }
 
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
     const user = await app.db.user.findOneBy({ id: 1});
-    const isAuth = await checkCookies(req,user);
+    const isAuth = await checkCookies(req);
 
-    if(!isAuth){
-      // res.redirect("/login");
-      console.log("USER COOKIE DOES NOT MATCH");
-    }
-    console.log(user);
 
-    const reward = await app.db.rewards.findOneBy({ id: +days });
-    console.log(JSON.stringify(reward));
 
+
+    const reward = await app.db.rewards.findOneBy({ day: +days });
     const rewards = await app.db.rewards.find();
 
     res.render("home", {
@@ -52,11 +81,9 @@ export default new Route("/")
   .post("/reedem", async (req, res) => {
     const days = new Date(Date.now()).getDate();
     const user = await app.db.user.findOneBy({ id: 1});
-    const reward = await app.db.rewards.findOneBy({ id: +days });
-    const isAuth = await checkCookies(req,user);
-    console.log("isAuth", isAuth);
+    const reward = await app.db.rewards.findOneBy({ day: +days });
+    const isAuth = await checkCookies(req);
     if(isAuth){
-      console.log(reward);
       if(reward.isRedeemed == false){
 
         reward.isRedeemed = true;
@@ -103,17 +130,17 @@ export default new Route("/")
     });
 });
 
-async function checkCookies(req,user) {
+async function checkCookies(req) {
+  const user = await app.db.user.findOneBy({ id: 1});
   let isAuth = false;
   const cookie = req.headers.cookie
   if(cookie){
     cookie.split(";").map((item) => {
       const [key, value] = item.replace(/\s/g,"").split("=");
-      if(key == "hash" && value === user.loggedInCookieHash){
+      if(key == "hash" && decode(value) === user.loggedInCookieHash){
         isAuth=true;
       } 
     });
-    console.log(isAuth);
   }
   return isAuth;
 }
@@ -135,7 +162,6 @@ export async function getThemeFromApi() {
 
     return axios.get(url)
       .then( async (response) => {
-        console.log(response.data);
 
         const { sunset, sunrise } = response.data;
 

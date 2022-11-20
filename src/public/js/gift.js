@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
     gift.addEventListener('animationend', () => {
       if (isActived) {
-        console.log('animationend');
         giftContainer.classList.add('hidden');
         axios.post(`reedem`).then((res) => {
           console.log(res);

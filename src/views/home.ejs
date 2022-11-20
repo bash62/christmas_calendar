@@ -35,7 +35,7 @@
     <img id="close-button" class="absolute rounded-full bg-white p-4 bottom-0 mb-16 left-1/2 -translate-x-1/2" src="/assets/close-button.svg" alt="">
   </div>
 
-  <%- include('partials/header') %>
+  <%- include('partials/header', {isHomePage: true}) %>
 
   <main class="hidden flex-col w-full h-2/4 relative z-20">
     <div id="rewards-container" class="<%= reward.isRedeemed? 'flex' : 'hidden'%> h-full  py-10 w-full flex-col items-center overflow-y-scroll overflow-x-hidden snap-y snap-mandatory">
