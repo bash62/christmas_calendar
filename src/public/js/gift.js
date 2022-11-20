@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animType: 'svg',
       loop: true,
       autoplay: false,
-      path: 'https://assets9.lottiefiles.com/packages/lf20_iqcpihc0.json',
+      path: '/lottie-files/gift.json',
     });
   
     giftAnimation.addEventListener('DOMLoaded', () => {

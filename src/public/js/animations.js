@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loop: true,
     autoplay: true,
     speed: 0.4,
-    path: 'https://assets6.lottiefiles.com/packages/lf20_a1rtrm7c.json',
+    path: '/lottie-files/leftGarland.json',
   });
 
   bodymovin.loadAnimation({
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loop: true,
     autoplay: true,
     speed: 0.4,
-    path: 'https://assets6.lottiefiles.com/packages/lf20_a1rtrm7c.json',
+    path: '/lottie-files/rightGarland.json',
   });
 
   const lutinContainer = document.getElementById('lottie-lutin');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animType: 'svg',
     loop: true,
     autoplay: true,
-    path: 'https://assets10.lottiefiles.com/packages/lf20_any3s17u.json',
+    path: '/lottie-files/lutin.json',
   });
 
   const loader = document.getElementById('loader');
@@ -37,6 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     animType: 'svg',
     loop: true,
     autoplay: true,
-    path: 'https://assets7.lottiefiles.com/packages/lf20_s6vm71il.json',
+    path: '/lottie-files/loader.json',
   });
 });
