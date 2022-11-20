@@ -39,10 +39,28 @@
 
   <main class="hidden flex-col items-center justify-center w-full h-2/4 relative z-20 ">
         <div class="flex flex-col items-center justify-center h-full space-y-4 ">
-            <p class="text-xl text-white ">Mot de passe </p>
-            <form action="login" method="post">
-                <input class="rounded-sm " type="text" name="password" id="password">
+            <form action="login" method="post" class="text-align text-sm">
+                <input type="input" name="password" class="form-control
+                    text-center
+                    text-semibold
+                    block
+                    px-3
+                    py-1.5
+                    text-base
+                    font-normal
+                    text-gray-700
+                    bg-white bg-clip-padding
+                    border border-solid border-gray-300
+                    rounded
+                    transition
+                    ease-in-out
+                    m-0
+                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="floatingInput" placeholder="Mot de passe">
             </form>
+            <% if(error) { %>
+                <p class="text-red-500 text-sm text-bold">Mot de passe incorrect</p>
+            <% } %>
+
         </div>
   </main>
 

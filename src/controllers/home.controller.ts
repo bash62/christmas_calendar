@@ -19,6 +19,7 @@ export default new Route("/")
       const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
       res.render("login", {
         theme: await fetchSunDate(+days),
+        error: false,
       });
     }
   })
@@ -34,7 +35,12 @@ export default new Route("/")
 
     }
     else{
-      return res.sendStatus(403);
+      const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
+
+      return res.render("login", {
+        theme: await fetchSunDate(+days),
+        error: true,
+      });
 
     }
   })
