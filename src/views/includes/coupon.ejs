@@ -36,7 +36,7 @@
     </div>
 
     <div class="row-start-2 row-span-1 col-start-6 col-span-2 flex justify-center items-center pt-1 pr-4">
-      <% if (!reward.isCouponClaimed) { %>
+      <% if (reward.isCouponClaimed) { %>
         <p class="text-red-500 font-bold text-lg">EXPIRE</p>
       <% } else { %>
         <p class="text-green-600 font-bold text-lg">VALIDE</p>

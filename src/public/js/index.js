@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  rewardContainer.scrollTo(0, rewardContainer.scrollHeight)
   rewardContainer.addEventListener('scroll', (e) => {
     const rewards = document.querySelectorAll('.reward');
       rewards.forEach(reward => {

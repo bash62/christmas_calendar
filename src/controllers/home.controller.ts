@@ -28,6 +28,8 @@ export default new Route("/")
 
     res.render("home", {
       days,
+      amountChocolate: user.amountChocolat,
+      amountSurprise: user.amountSurprise,
       lastseen: user.lastDayConnection,
       title: "Home",
       theme: await fetchSunDate(+days),
@@ -53,7 +55,7 @@ export default new Route("/")
     const reward = await app.db.rewards.findOneBy({ id: +days });
     const isAuth = await checkCookies(req,user);
     console.log("isAuth", isAuth);
-    if(!isAuth){
+    if(isAuth){
       console.log(reward);
       if(reward.isRedeemed == false){
 

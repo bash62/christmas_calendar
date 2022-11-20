@@ -26,7 +26,7 @@ function animate(obj, initVal, lastVal, duration) {
 }
 
 function displaySnow(quantity) {
-  addSnow(quantity * 5);
+  addSnow(quantity * 8);
 }
 
 function removeSnow(quantity) {
@@ -49,16 +49,14 @@ function addSnow(quantity) {
 }
 
 let t;
-let globalQuantity = 0;
 function updateSnow(day) {
-  globalQuantity = day;
   clearTimeout(t);
   t = setTimeout(() => {
     const snows = document.querySelectorAll('.snow');
-    if (snows.length > day * 5) {
-      removeSnow(snows.length - (day * 5));
+    if (snows.length > day * 8) {
+      removeSnow(snows.length - (day * 8));
     } else {
-      addSnow((day * 5) - snows.length);
+      addSnow((day * 8) - snows.length);
     }
     clearTimeout(t);
   }, 200);
