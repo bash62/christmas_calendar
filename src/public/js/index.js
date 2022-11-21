@@ -1,13 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const date = document.getElementById('calendar-date');
+  animate(date, +lastseen, +days, 2000);
   
-  if (JSON.parse(getItem("config")).firsTime) {
-    animate(date, 1, +days, 2000);
-    setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
-  } else {
-    animate(date, +lastseen, +days, 2000);
-    setItem('config', JSON.stringify({firsTime: false, lastDate: days}));
-  }
 
   const rewards = document.querySelectorAll('.reward');
   const todayReward = document.querySelector('.today-reward');

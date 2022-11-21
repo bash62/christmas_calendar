@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
           gift.classList.add('animate-fade-out');
           
           const step = rewardsContainer.scrollHeight / document.querySelectorAll('.reward').length;
-          rewardsContainer.scrollTo(0, step * (+days));
+          rewardsContainer.scrollTo(0, step * document.querySelectorAll('.reward').length);
           rewardsContainer.classList.add('overflow-y-hidden');
           rewardsContainer.classList.remove('overflow-y-scroll');
   
