@@ -2,7 +2,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const day = +"<%= reward.day %>"
     const gift = document.querySelector(`#lottie-gift-${day}`);
-    const giftContainer = document.querySelector(`.gift-container-${day}`);
+    const giftContainer = document.querySelector(`#gift-container-${day}`);
     const reward = document.getElementById(`reward-${day}`);
 
     const animation = lottie.loadAnimation({

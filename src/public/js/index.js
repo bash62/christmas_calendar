@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   const date = document.getElementById('calendar-date');
-  animate(date, +lastseen, +days, 2000);
-  
 
   const rewards = document.querySelectorAll('.reward');
   const todayReward = document.querySelector('.today-reward');
@@ -14,10 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const button = document.getElementById('close-button');
   const containers = document.querySelectorAll(['header', 'footer']);
 
-  let clickedRewardId = todayReward.id;
-
   rewards.forEach(reward => {
-    console.log(reward.id);
     reward.style.scale = '0.5';
     if (reward.classList.contains('video-container')) {
       const videoBtn = document.querySelector(`#video-button-${reward.id.split('-')[1]}`);
@@ -65,14 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const rewardContainerRect = rewardContainer.getBoundingClientRect();
 
         if (rewardRect.top >= rewardContainerRect.top && rewardRect.bottom <= rewardContainerRect.bottom) {
-          animate(date, +lastseen, +(reward.id.split('-')[1]), 2000);
+          const newDay = reward.id.includes("gift")? +(reward.id.split('-')[2]) : +(reward.id.split('-')[1])
+          animate(date, +lastseen, newDay, 2000);
           updateSnow(+(reward.id.split('-')[1]));
-          lastseen = (reward.id.split('-')[1])
+          lastseen = newDay;
+          clickedRewardId = `reward-${newDay}`;
         }
       })
   }, false)
 
   button.addEventListener('click', () => {
+    console.log(clickedRewardId);
     const clickedReward = document.getElementById(`${clickedRewardId}`);
     if (clickedReward.classList.contains('video-container')) {
       const videoBtn = document.querySelector(`#video-button-${clickedReward.id.split('-')[1]}`);

@@ -87,9 +87,10 @@ function giftAnimation(gift, animation, container, day, isToday) {
       reward.classList.add('flex')
       reward.classList.add('animate-fade-in');
       reward.style.scale = 1;
-      axios.post(`reedem/${day}`).then((res) => {
+      /*axios.post(`reedem/${day}`).then((res) => {
         console.log(res);
-      })
+      })*/
+      clickedRewardId = reward.id;
     }
   });
 
