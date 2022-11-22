@@ -2,7 +2,7 @@
     <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward video-container h-48 w-full p-2 bg-black bg-opacity-30 rounded-xl items-center">
       <iframe id="video-<%= reward.day %>" class="rounded-lg" width="100%" height="100%" src="https://www.youtube.com/embed/<%= reward.path %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-    <div id="video-button-<%= reward.day %>" class="absolute h-full w-full"></div>
+    <div id="video-button-<%= reward.day %>" class="absolute h-full w-full <%= reward.isRedeemed? 'flex' : 'hidden' %>"></div>
     <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
       <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
     </div>
