@@ -1,11 +1,11 @@
-<section id="rewards-container-<%= reward.day %>" class="<%= isToday? 'today-container' : '' %> snap-always snap-center my-10  flex h-full w-full justify-center items-center px-4 ">
+<section id="rewards-container-<%= reward.day %>" class="<%= isToday? 'today-container' : '' %> relative snap-always snap-center my-10 flex h-full w-full justify-center items-center px-4">
   <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward w-48 h-48 rounded-t-xl relative">
     <img id="photo" class="w-full h-40 object-cover rounded-t-xl" src="/assets/<%= reward.path %>" alt="" srcset="">
     <div class="absolute w-48 rounded-b-xl bottom-0 h-8 bg-black">
       <p class="p-2 w-full h-full text-xs text-white"><%= reward.caption %></p>
     </div>
   </div>
-  <div id="gift-container-<%= reward.day %>" class=" absolute w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %>">
+  <div id="gift-container-<%= reward.day %>" class="w-full h-full reward <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
     <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
   </div>
 </section>
