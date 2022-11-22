@@ -1,5 +1,5 @@
-<section id="rewards-container-<%= reward.day %>  " class="<%= isToday? 'today-container' : '' %> h-full w-full my-10 px-4 flex items-center justify-center snap-always snap-center">
-  <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> reward w-full h-48 rounded-xl grid grid-rows-4 grid-cols-7 overflow-hidden">
+<section id="reward-container-<%= reward.day %> " class="<%= isToday? 'today-container' : '' %> snap-always snap-center my-10  flex h-full w-full justify-center items-center">
+  <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward w-full h-48 rounded-xl grid grid-rows-4 grid-cols-7 overflow-hidden px-4">
     <div class="row-start-1 row-span-4 col-start-1 col-span-7">
       <img class="h-full w-full" src="/assets/coupon.svg" alt="coupon">
     </div>
@@ -48,7 +48,14 @@
     </div>
 
   </div>
+  <div id="gift-container-<%= reward.day %> " class="gift-container-<%= reward.day %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
+    <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
+  </div>
 </section>
+
+<% if (!reward.isRedeemed) { %>
+  <%- include('../partials/gift', { reward: reward, isToday: isToday }) %>
+<% } %>
 
 <script>
   axios.get(`/qrcode/<%= reward.id %>`)

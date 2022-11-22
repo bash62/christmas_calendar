@@ -1,0 +1,33 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const gift = document.querySelector('#lottie-gift-<%= reward.day %>');
+    const giftContainer = document.querySelector('.gift-container-<%= reward.day %>');
+  
+    const reward = document.querySelector('#reward-<%= reward.day %>');
+
+    const animation = lottie.loadAnimation({
+      container: gift,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/lottie-files/gift.json'
+    });
+
+    animation.addEventListener('DOMLoaded', () => {
+      animation.playSegments([8, 44], true);
+      animation.play();
+    });
+
+    giftContainer.addEventListener('click', () => {
+      console.log("clicked", gift.id);
+      if (giftContainer.style.scale == 1) {
+        giftAnimation(gift, animation, giftContainer, +"<%= reward.day %>", "<%= isToday %>" == "true");
+        
+        
+        animation.playSegments([2, 44], true);
+        animation.setDirection(-1);
+        animation.play();
+      }
+    })
+  });
+</script>

@@ -18,7 +18,7 @@
 <title>Le calendrier de Margaux</title>
 </head>
 
-<body class="h-screen w-full flex flex-col justify-between relative body-radial-gradient">
+<body class="h-screen w-full flex flex-col overflow-y-hidden justify-between relative body-radial-gradient">
 
   <div class="w-full h-full flex justify-center items-center body-radial-gradient" id="loader-container" >
     <div class="w-48" id="loader">
@@ -45,8 +45,8 @@
       for (let i = 0; i < rewards.length; i++) { 
         let reward = rewards[i];
         let isToday = reward.day === +days;
-        console.log(isToday);
-        if (reward.isRedeemed || isToday) { %>
+        console.log(rewards);
+        if (reward.day <= +days) { %>
           <% if (reward.type === 'chocolat') { %>  
             <% amountC += 1; %>
             <%- include('includes/chocolat', {reward: reward, isToday: isToday, amount: amountC}) %>
@@ -113,6 +113,6 @@
     });
   </script>
   <script src="/js/index.js"></script>
-  <script src="/js/gift.js"></script>
+  <!-- script src="/js/gift.js"></script -->
 </body>
 </html>

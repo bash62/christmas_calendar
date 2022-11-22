@@ -1,5 +1,12 @@
-<section id="rewards-container-<%= reward.day %> " class="<%= isToday? 'today-container' : '' %> flex h-full px-8 my-10  w-full justify-center items-center snap-always snap-center">
-  <div id="reward-<%= reward.day %> " class="<%= isToday? 'today-reward' : '' %> reward h-48 w-full p-4 bg-black bg-opacity-30 rounded-xl flex items-center">
+<section id="rewards-container-<%= reward.day %> " class="<%= isToday? 'today-container' : '' %> snap-always snap-center my-10  flex h-full w-full justify-center items-center">
+  <div id="reward-<%= reward.day %> " class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward h-48 w-full p-4 bg-black bg-opacity-30 rounded-xl flex items-center">
     <p class="w-full text-white text-center align-middle text-4xl"><%= reward.phrase %></p>
   </div>
+  <div id="gift-container-<%= reward.day %> " class="gift-container-<%= reward.day %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
+    <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
+  </div>
 </section>
+
+<% if (!reward.isRedeemed) { %>
+  <%- include('../partials/gift', { reward: reward, isToday: isToday }) %>
+<% } %>

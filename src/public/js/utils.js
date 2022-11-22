@@ -62,3 +62,68 @@ function updateSnow(day) {
   }, 200);
   
 }
+
+function giftAnimation(gift, animation, container, day, isToday) {
+
+  let isActived = true;
+  let isFirstLoop = false;
+  let frameCounter = 0;
+
+  const rewardsContainer = document.querySelector('#rewards-container');
+  const rewardsCount = document.querySelectorAll('.reward').length;
+
+  var reward = document.querySelector(`#reward-${day}`);
+
+
+  if (isToday) {
+    reward.style.scale = 1;
+  }
+
+  gift.addEventListener('animationend', (event) => {
+    if (isActived) {
+      console.log(event)
+      const r = document.querySelector(`#reward-${day}`);
+      console.log()
+      r.classList.add('flex');
+      r.classList.remove('hidden');
+      r.classList.add('animate-scale-in');
+      r.style.scale = 1;
+
+      container.classList.add('hidden');
+      axios.post(`reedem`).then((res) => {
+        console.log(res);
+      })
+    }
+  });
+
+  animation.addEventListener('enterFrame', (e) => {
+    if(Math.floor(e.currentTime) == 41 && isActived){
+      frameCounter++;
+      if(frameCounter == 3){
+        frameCounter++;
+      };
+      if(frameCounter == 4){
+        rewardsContainer.classList.remove('hidden');
+        rewardsContainer.classList.add('flex');
+        rewardsContainer.classList.add('animate-fade-in');
+
+        const buttonContainer = document.getElementById('close-button-container');
+        buttonContainer.classList.remove('hidden');
+
+        const containers = document.querySelectorAll(['header', 'footer']);
+        containers.forEach(c => {
+          c.classList.add('blur-sm');
+        });
+        gift.classList.add('animate-fade-out');
+
+        isFirstLoop = true;
+        animation.stop();
+      };
+    }
+    if (Math.floor(e.currentTime) <= 10 && isActived) {
+      animation.setSpeed(0.5);
+    } else if (Math.floor(e.currentTime) <= 5 && isActived) {
+      animation.setSpeed(0.2);
+    }
+  });
+}

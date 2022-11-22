@@ -1,17 +1,20 @@
-<section id="rewards-container-<%= reward.day %> " class="<%= isToday? 'today-container' : '' %> h-full w-full my-10 px-4 flex items-center justify-center snap-always snap-center">
-  <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> reward w-48 h-48 rounded-t-xl relative">
+<section id="rewards-container-<%= reward.day %> " class="<%= isToday? 'today-container' : '' %> snap-always snap-center my-10  flex h-full w-full justify-center items-center px-4 ">
+  <div id="reward-<%= reward.day %> " class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward w-48 h-48 rounded-t-xl relative">
     <img id="photo" class="w-full h-40 object-cover rounded-t-xl" src="/assets/<%= reward.path %>" alt="" srcset="">
     <div class="absolute w-48 rounded-b-xl bottom-0 h-8 bg-black">
       <p class="p-2 w-full h-full text-xs text-white"><%= reward.caption %></p>
     </div>
   </div>
- 
+  <div id="gift-container-<%= reward.day %>" class=" absolute w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %>">
+    <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
+  </div>
 </section>
 
 <script>
-  const photo = document.querySelector('#photo');
-  photo.addEventListener('click', () => {
-    if (document.getElementById("reward-<%= reward.id %>").style.scale !== '0.5') {
+  const photo = document.getElementById('photo');
+  photo.addEventListener('click', (e) => {
+  const reward = e.srcElement.offsetParent;
+    if (reward.style.scale !== '0.5') {
       document.getElementById('fullscreen-photo-container').classList.remove('hidden');
       document.getElementById('fullscreen-photo').src = `/assets/<%= reward.path %>`;
       document.getElementById('fullscreen-photo-caption').innerText = `<%= reward.caption %>`;
@@ -19,3 +22,7 @@
     }
   })
 </script>
+
+<% if (!reward.isRedeemed) { %>
+  <%- include('../partials/gift', { reward: reward, isToday: isToday }) %>
+<% } %>

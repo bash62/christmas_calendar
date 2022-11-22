@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let clickedRewardId = todayReward.id;
 
   rewards.forEach(reward => {
+    console.log(reward.id);
     reward.style.scale = '0.5';
     if (reward.classList.contains('video-container')) {
       const videoBtn = document.querySelector(`#video-button-${reward.id.split('-')[1]}`);
