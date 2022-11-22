@@ -30,7 +30,7 @@ export default new Route("/")
 
     if(match){
 
-      res.cookie("hash", encode(user.loggedInCookieHash), { maxAge: 900000, httpOnly: true });
+      res.cookie("hash", encode(user.loggedInCookieHash), { maxAge: 1000 * 60 * 60 * 24, httpOnly: true });
       return res.redirect("/");
 
     }
@@ -84,8 +84,8 @@ export default new Route("/")
   .get("/site.webmanifest", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'site.webmanifest'))
   })
-  .post("/reedem", async (req, res) => {
-    const days = new Date(Date.now()).getDate();
+  .post("/reedem/:day", async (req, res) => {
+    const days = req.params.day;
     const user = await app.db.user.findOneBy({ id: 1});
     const reward = await app.db.rewards.findOneBy({ day: +days });
     const isAuth = await checkCookies(req);
@@ -104,7 +104,7 @@ export default new Route("/")
             break;
         }
 
-        user.lastDayConnection = days;
+        user.lastDayConnection = +days;
 
         await app.db.rewards.save(reward);
         await app.db.user.save(user);

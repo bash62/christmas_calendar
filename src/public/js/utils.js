@@ -1,3 +1,5 @@
+let isLoaded = false;
+
 function setItem(name, value) {
   localStorage.setItem(name, value);
 }
@@ -74,23 +76,18 @@ function giftAnimation(gift, animation, container, day, isToday) {
 
   var reward = document.querySelector(`#reward-${day}`);
 
-
   if (isToday) {
     reward.style.scale = 1;
   }
 
-  gift.addEventListener('animationend', (event) => {
+  gift.addEventListener('animationend', () => {
     if (isActived) {
-      console.log(event)
-      const r = document.querySelector(`#reward-${day}`);
-      console.log()
-      r.classList.add('flex');
-      r.classList.remove('hidden');
-      r.classList.add('animate-scale-in');
-      r.style.scale = 1;
-
       container.classList.add('hidden');
-      axios.post(`reedem`).then((res) => {
+      reward.classList.remove('hidden');
+      reward.classList.add('flex')
+      reward.classList.add('animate-fade-in');
+      reward.style.scale = 1;
+      axios.post(`reedem/${day}`).then((res) => {
         console.log(res);
       })
     }

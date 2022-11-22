@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const step = rewardsContainer.scrollHeight / rewardsCount;
             rewardsContainer.scrollTo(0, step * rewardsCount);
         }
+        isLoaded = true;
     }, Math.random() * 1000 + 2500);
 
 });

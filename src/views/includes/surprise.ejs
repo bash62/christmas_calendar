@@ -1,11 +1,11 @@
-<section id="rewards-container-<%= reward.day %> " class="<%= isToday? 'today-container' : '' %> snap-always snap-center my-10  flex h-full w-full justify-center items-center">
-  <div id="reward-<%= reward.day %> " class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward h-full flex-col justify-center space-y-8">
+<section id="rewards-container-<%= reward.day %>" class="<%= isToday? 'today-container' : '' %> snap-always snap-center my-10  flex h-full w-full justify-center items-center">
+  <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward h-full flex-col justify-center space-y-8">
     <div class="w-36 h-40 flex flex-col space-y-3 relative justify-end">
       <img class="absolute h-40 animate-floating w-36" src="/assets/candy-cane.svg" alt="" srcset="">
     </div>
     <p class="font-semibold text-center text-white text-3xl"><%= amount %>/4</p>
   </div>
-  <div id="gift-container-<%= reward.day %> " class="gift-container-<%= reward.day %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
+  <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
     <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
   </div>
 </section>

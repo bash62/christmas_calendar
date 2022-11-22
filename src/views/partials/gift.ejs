@@ -1,9 +1,9 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const gift = document.querySelector('#lottie-gift-<%= reward.day %>');
-    const giftContainer = document.querySelector('.gift-container-<%= reward.day %>');
-  
-    const reward = document.querySelector('#reward-<%= reward.day %>');
+    const day = +"<%= reward.day %>"
+    const gift = document.querySelector(`#lottie-gift-${day}`);
+    const giftContainer = document.querySelector(`.gift-container-${day}`);
+    const reward = document.getElementById(`reward-${day}`);
 
     const animation = lottie.loadAnimation({
       container: gift,
@@ -18,11 +18,9 @@
       animation.play();
     });
 
-    giftContainer.addEventListener('click', () => {
-      console.log("clicked", gift.id);
-      if (giftContainer.style.scale == 1) {
+    giftContainer.addEventListener('click', (e) => {
+      if (giftContainer.style.scale == 1 && isLoaded) {
         giftAnimation(gift, animation, giftContainer, +"<%= reward.day %>", "<%= isToday %>" == "true");
-        
         
         animation.playSegments([2, 44], true);
         animation.setDirection(-1);
