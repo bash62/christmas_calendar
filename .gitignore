@@ -106,3 +106,5 @@ dist
 
 .vscode/
 dist/
+
+./src/public/css/style.css
