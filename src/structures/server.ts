@@ -21,13 +21,14 @@ export class Server {
     
     this.port = options.port;
     this.sessionConfig = options.session;
+    
     this.db = new AppDataSource({
       type: "mysql",
-      host: "localhost",
-      port: 3306,
+      host: process.env.MYSQL_HOST,
+      port: +process.env.MYSQL_PORT,
       username: "root",
-      password: "root",
-      database: "mago_database",
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
       synchronize: true,
       logging: ["error"],
       entities: Entities,

@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  database:
+    container_name: calendar-db
+    image: mysql:latest
+    stdin_open: true
+    tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mago_database
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - calendar-db:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: calendar-phpmyadmin
+    image: phpmyadmin
+    stdin_open: true
+    tty: true
+    restart: always
+    environment:
+      PMA_HOST: database
+    ports:
+      - 8080:80
+    depends_on:
+      - database
+
+  app:
+    restart: always
+    container_name: calendar-app
+    image: app
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      target: production
+    tty: true
+    stdin_open: true
+    ports:
+      - 3005:3005
+    volumes:
+      - ../:/app
+    environment:
+      MYSQL_HOST: database
+
+volumes:
+  calendar-db:
