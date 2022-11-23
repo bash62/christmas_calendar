@@ -73,4 +73,15 @@ export class Rewards {
     })
     isCouponClaimed: boolean
 
+    @Column({
+        nullable: false,
+        default: 0,
+    })
+    numberChocolateOnClaimed: number
+
+    @Column({
+        nullable: false,
+        default: 0,
+    })
+    numberSurpriseOnClaimed: number
 }

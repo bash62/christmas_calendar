@@ -9,7 +9,7 @@
     </div>
 
     <div class="row-start-2 row-span-1 col-span-5 col-start-1 flex flex-col items-start justify-center px-4 ">
-      <p class="text-slate-800  font-mono font-extrabold text-sm uppercase ">Massage de 10 minutes</p>
+      <p class="text-slate-800  font-mono font-extrabold text-sm uppercase "><%= reward.description %></p>
       <p class="text-gray-500  font-mono font-bold text-xs uppercase ">Description</p>
     </div>
 
@@ -48,7 +48,7 @@
     </div>
 
   </div>
-  <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
+  <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> reward w-full h-full <%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
     <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
   </div>
 </section>

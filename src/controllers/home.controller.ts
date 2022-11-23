@@ -98,20 +98,23 @@ export default new Route("/")
         switch(reward.type){
           case RewardType.surprise:
             user.amountSurprise = user.amountSurprise + 1;
+            reward.numberSurpriseOnClaimed = user.amountSurprise;
             break;
           case RewardType.chocolat:
             user.amountChocolat = user.amountChocolat + 1;
+            reward.numberChocolateOnClaimed = user.amountChocolat;
             break;
         }
 
         user.lastDayConnection = +days;
-
         await app.db.rewards.save(reward);
         await app.db.user.save(user);
       }
     }
 
-    res.status(200);
+    res.status(200).send({
+      ...reward
+    })
   })
   .get("/qrcode/:id", (req, res) => {
     const url = "192.168.1.91:3005/coupons/1";

@@ -13,7 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const containers = document.querySelectorAll(['header', 'footer']);
 
   rewards.forEach(reward => {
-    reward.style.scale = '0.5';
+    if (reward.classList.contains('today-reward') && reward.id.includes('gift')) {
+      console.log('today', reward.id);
+      reward.style.scale = 1;
+      reward.classList.add('animate-fade-in');
+    } else {
+      reward.style.scale = '0.5';
+    }
     if (reward.classList.contains('video-container')) {
       const videoBtn = document.querySelector(`#video-button-${reward.id.split('-')[1]}`);
       videoBtn.addEventListener('click', () => {

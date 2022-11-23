@@ -48,7 +48,7 @@
         console.log(rewards);
         if (reward.day <= +days) { %>
           <% if (reward.type === 'chocolat') { %>  
-            <% amountC += 1; %>
+            <% if (reward.isRedeemed || isToday) amountC += 1; %>
             <%- include('includes/chocolat', {reward: reward, isToday: isToday, amount: amountC}) %>
           <% } %>
           
@@ -61,7 +61,7 @@
           <% } %>
           
           <% if (reward.type === 'surprise') { %>  
-            <% amountS += 1; %>
+            <% if (reward.isRedeemed || isToday) amountS += 1; %>
             <%- include('includes/surprise', {reward: reward, isToday: isToday, amount: amountS}) %>
           <% } %>
   

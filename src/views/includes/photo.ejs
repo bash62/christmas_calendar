@@ -5,7 +5,7 @@
       <p class="p-2 w-full h-full text-xs text-white"><%= reward.caption %></p>
     </div>
   </div>
-  <div id="gift-container-<%= reward.day %>" class="w-full h-full reward <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
+  <div id="gift-container-<%= reward.day %>" class="w-full h-full reward <%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
     <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
   </div>
 </section>

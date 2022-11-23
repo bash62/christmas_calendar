@@ -87,13 +87,14 @@ function giftAnimation(gift, animation, container, day, isToday) {
       reward.classList.add('flex')
       reward.classList.add('animate-fade-in');
       reward.style.scale = 1;
-      if (reward.classList.contains('video-container')) {
-        const btn = reward.querySelector(`#video-button-${day}`);
-        //btn.classList.add('hidden');
-      }
-      /*axios.post(`reedem/${day}`).then((res) => {
+      axios.post(`reedem/${day}`).then((res) => {
         console.log(res);
-      })*/
+        if (res.data.type === 'chocolat') {
+          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberChocolateOnClaimed}/4`;
+        } else if (res.data.type === 'surprise') {
+          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberSurpriseOnClaimed}/4`;
+        }
+      })
       clickedRewardId = reward.id;
     }
   });
