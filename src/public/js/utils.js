@@ -90,9 +90,9 @@ function giftAnimation(gift, animation, container, day, isToday) {
       axios.post(`reedem/${day}`).then((res) => {
         console.log(res);
         if (res.data.type === 'chocolat') {
-          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberChocolateOnClaimed}/4`;
+          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberChocolateOnClaimed}/${res.data.totalAmountChocolate}`;
         } else if (res.data.type === 'surprise') {
-          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberSurpriseOnClaimed}/4`;
+          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberSurpriseOnClaimed}/${res.data.totalAmountSurprise}`;
         }
       })
       clickedRewardId = reward.id;

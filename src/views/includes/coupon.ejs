@@ -46,11 +46,11 @@
     <div class="row-start-3 row-span-2 col-start-6 col-span-2 flex justify-center items-center pt-1 pr-4">
       <img id="qrcode" class="w-20" src="" alt="">
     </div>
-
   </div>
   <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> reward w-full h-full <%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
     <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
   </div>
+
 </section>
 
 <% if (!reward.isRedeemed) { %>

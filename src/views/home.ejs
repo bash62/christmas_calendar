@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="<%= theme %> ">
+<html lang="en" class="<%= theme %> " prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <%- include('partials/meta') %>
 
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/snow.css">
@@ -49,7 +51,7 @@
         if (reward.day <= +days) { %>
           <% if (reward.type === 'chocolat') { %>  
             <% if (reward.isRedeemed || isToday) amountC += 1; %>
-            <%- include('includes/chocolat', {reward: reward, isToday: isToday, amount: amountC}) %>
+            <%- include('includes/chocolat', {reward: reward, isToday: isToday, amount: amountC, total: totalAmountChocolate}) %>
           <% } %>
           
           <% if (reward.type === 'message') { %>  
@@ -62,7 +64,7 @@
           
           <% if (reward.type === 'surprise') { %>  
             <% if (reward.isRedeemed || isToday) amountS += 1; %>
-            <%- include('includes/surprise', {reward: reward, isToday: isToday, amount: amountS}) %>
+            <%- include('includes/surprise', {reward: reward, isToday: isToday, amount: amountS, total: totalAmountSurprise}) %>
           <% } %>
   
           <% if (reward.type === 'photo') { %>  
@@ -93,7 +95,6 @@
     const photoUrl = "<%= reward.path %>";
     let isRewardOpen = false;
     const isRedeemed = "<%= reward.isRedeemed %>" === "true";
-
 
     let clickedRewardId = `reward-${+days}`;
     var cookie = {

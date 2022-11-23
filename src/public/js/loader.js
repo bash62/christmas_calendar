@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loader_container = document.getElementById('loader-container');
         const snowContainer = document.getElementById('snow-container');
         const rewardsContainer = document.querySelector('#rewards-container');
+        const couponsBtnsContainer = document.querySelector('#coupon-btns-validate');
 
         containers.forEach(container => {
             container.classList.remove('hidden');
@@ -22,6 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const step = rewardsContainer.scrollHeight / rewardsCount;
             rewardsContainer.scrollTo(0, step * rewardsCount);
         }
+
+        if (couponsBtnsContainer) {
+            couponsBtnsContainer.classList.remove('hidden');
+            couponsBtnsContainer.classList.add('flex');
+        }
+
         isLoaded = true;
     }, Math.random() * 1000 + 2500);
 

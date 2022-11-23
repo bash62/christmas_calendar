@@ -9,12 +9,12 @@ export class Route {
     this.router = express.Router();
   }
 
-  public get(path: string, callback: express.RequestHandler) {
+  public get(path: string, ...callback: express.RequestHandler[]) {
     this.router.get(path, callback);
     return this;
   }
 
-  public post(path: string, callback: express.RequestHandler) {
+  public post(path: string, ...callback: express.RequestHandler[]) {
     this.router.post(path, callback);
     return this;
   }

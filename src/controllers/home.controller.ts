@@ -9,19 +9,45 @@ const qr = require("qrcode");
 const axios = require('axios');
 const bcrypt = require('bcrypt');
 
-export default new Route("/")
+async function isAuthenticated(req, res, next) {
+  const user = await app.db.user.findOneBy({ id: 1});
+  const cookie = req.headers.cookie
+  let isAuth = false;
+  if (!cookie) return res.redirect("/login");
 
-  .get("/login",async (req, res) => {
-    if(await checkCookies(req)){
-      res.redirect("/");
-    }
-    else {
-      const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
+  cookie.split(";").map((item) => {
+    const [key, value] = item.replace(/\s/g,"").split("=");
+    if(key == "hash" && decode(value) === user.loggedInCookieHash){
+      isAuth = true;
+    } 
+  });
+
+  return isAuth? next() : res.redirect("/login");
+}
+
+async function alreadyAuthenticated(req, res, next) {
+  const user = await app.db.user.findOneBy({ id: 1});
+  const cookie = req.headers.cookie
+  let isAuth = false;
+  if (!cookie) isAuth = false;
+
+  cookie.split(";").map((item) => {
+    const [key, value] = item.replace(/\s/g,"").split("=");
+    if(key == "hash" && decode(value) === user.loggedInCookieHash){
+      isAuth = true;
+    } 
+  });
+
+  return isAuth? res.redirect("/") : next();
+}
+
+export default new Route("/")
+  .get("/login", alreadyAuthenticated, async (req, res) => {
+    const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
       res.render("login", {
         theme: await fetchSunDate(+days),
         error: false,
       });
-    }
   })
   .post("/login", async (req, res) => {
     const { password } = req.body;
@@ -44,19 +70,12 @@ export default new Route("/")
 
     }
   })
-  .get("/", async (req, res) => {
-
-    if(!(await checkCookies(req))){
-      
-      return res.redirect("/login");
-    }
-
+  .get("/", isAuthenticated, async (req, res) => {
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
     const user = await app.db.user.findOneBy({ id: 1});
-    const isAuth = await checkCookies(req);
 
-
-
+    const totalAmountChocolate = await app.db.rewards.countBy({ type: RewardType.chocolat }); 
+    const totalAmountSurprise = await app.db.rewards.countBy({ type: RewardType.surprise }); 
 
     const reward = await app.db.rewards.findOneBy({ day: +days });
     const rewards = await app.db.rewards.find();
@@ -70,6 +89,10 @@ export default new Route("/")
       theme: await fetchSunDate(+days),
       reward: reward,
       rewards: rewards,
+      totalAmountChocolate: totalAmountChocolate,
+      totalAmountSurprise: totalAmountSurprise,
+      claimedAllChocolat: totalAmountChocolate == user.amountChocolat,
+      claimedAllSurprise: totalAmountSurprise == user.amountSurprise,
     });
   })
   .get("/robot.txt", (req, res) => {
@@ -84,40 +107,41 @@ export default new Route("/")
   .get("/site.webmanifest", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'site.webmanifest'))
   })
-  .post("/reedem/:day", async (req, res) => {
+  .post("/reedem/:day", isAuthenticated, async (req, res) => {
     const days = req.params.day;
     const user = await app.db.user.findOneBy({ id: 1});
     const reward = await app.db.rewards.findOneBy({ day: +days });
-    const isAuth = await checkCookies(req);
-    if(isAuth){
-      if(reward.isRedeemed == false){
+    if(reward.isRedeemed == false){
+      reward.isRedeemed = true;
+      user.amountRedeemed = user.amountRedeemed + 1;
 
-        reward.isRedeemed = true;
-        user.amountRedeemed = user.amountRedeemed + 1;
-
-        switch(reward.type){
-          case RewardType.surprise:
-            user.amountSurprise = user.amountSurprise + 1;
-            reward.numberSurpriseOnClaimed = user.amountSurprise;
-            break;
-          case RewardType.chocolat:
-            user.amountChocolat = user.amountChocolat + 1;
-            reward.numberChocolateOnClaimed = user.amountChocolat;
-            break;
-        }
-
-        user.lastDayConnection = +days;
-        await app.db.rewards.save(reward);
-        await app.db.user.save(user);
+      switch(reward.type){
+        case RewardType.surprise:
+          user.amountSurprise = user.amountSurprise + 1;
+          reward.numberSurpriseOnClaimed = user.amountSurprise;
+          break;
+        case RewardType.chocolat:
+          user.amountChocolat = user.amountChocolat + 1;
+          reward.numberChocolateOnClaimed = user.amountChocolat;
+          break;
       }
+
+      user.lastDayConnection = +days;
+      await app.db.rewards.save(reward);
+      await app.db.user.save(user);
     }
 
+    const totalAmountChocolate = await app.db.rewards.countBy({ type: RewardType.chocolat }); 
+    const totalAmountSurprise = await app.db.rewards.countBy({ type: RewardType.surprise }); 
+
     res.status(200).send({
-      ...reward
+      ...reward,
+      totalAmountChocolate,
+      totalAmountSurprise,
     })
   })
   .get("/qrcode/:id", (req, res) => {
-    const url = "192.168.1.91:3005/coupons/1";
+    const url = "http://192.168.1.91:3005/coupons/" + req.params.id;
     
 
     // If the input is null return "Empty Data" error
@@ -137,22 +161,27 @@ export default new Route("/")
         if (err) res.send("Error occured");
         res.send(src);
     });
+}).get("/coupons/:id", isAuthenticated, async (req, res) => {
+  const id = req.params.id;
+  const coupon = await app.db.rewards.findOneBy({ id: +id });
+
+  if(coupon){
+    res.render("validate-coupon", {
+      coupon: coupon,
+    });
+  } else {
+    res.redirect("/");
+  }
+}).post("/coupons/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.body;
+  const coupon = await app.db.rewards.findOneBy({ id: +id });
+  await app.db.rewards.save({
+    ...coupon,
+    isCouponClaimed: true,
+  });
+  res.redirect("/");
 });
 
-async function checkCookies(req) {
-  const user = await app.db.user.findOneBy({ id: 1});
-  let isAuth = false;
-  const cookie = req.headers.cookie
-  if(cookie){
-    cookie.split(";").map((item) => {
-      const [key, value] = item.replace(/\s/g,"").split("=");
-      if(key == "hash" && decode(value) === user.loggedInCookieHash){
-        isAuth=true;
-      } 
-    });
-  }
-  return isAuth;
-}
 
 export async function getThemeFromApi() {
   const date = new Date(Date.now());

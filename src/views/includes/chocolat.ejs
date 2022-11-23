@@ -3,7 +3,7 @@
     <div class="w-36 h-40 flex flex-col space-y-3 relative justify-end">
       <img class="absolute h-40 animate-floating w-36" src="/assets/chocolat.svg" alt="" srcset="">
     </div>
-    <p id="amount-<%= reward.day %>" class="font-semibold text-center text-white text-3xl"><%= reward.numberChocolateOnClaimed %>/6</p>
+    <p id="amount-<%= reward.day %>" class="font-semibold text-center text-white text-3xl"><%= reward.numberChocolateOnClaimed %>/<%= total %></p>
   </div>
   <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> <%= isToday? 'today-reward' : '' %> reward w-full h-full <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
     <div id="lottie-gift-<%= reward.day %>" class="w-48 animate"></div>
