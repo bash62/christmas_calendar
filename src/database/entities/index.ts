@@ -1,7 +1,4 @@
-import { User } from './User';
-import { Rewards } from './Rewards';
-import { SunDate } from './sun-date';
+import { User } from './user';
+import { Rewards } from './rewards';
 
-
-
-export const Entities = [User,Rewards, SunDate];
+export const Entities = [User,Rewards];

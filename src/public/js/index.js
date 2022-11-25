@@ -13,12 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const containers = document.querySelectorAll(['header', 'footer']);
 
   rewards.forEach(reward => {
+    const rewardsContainer = document.getElementById(`rewards-container-${reward.id.split('-')[1]}`);
     if (reward.classList.contains('today-reward') && reward.id.includes('gift')) {
-      console.log('today', reward.id);
       reward.style.scale = 1;
       reward.classList.add('animate-fade-in');
     } else {
       reward.style.scale = '0.5';
+      if (!reward.classList.contains('today-reward') && !isRedeemed) {
+        reward.parentNode.classList.add('hidden');
+      }
     }
     if (reward.classList.contains('video-container')) {
       const videoBtn = document.querySelector(`#video-button-${reward.id.split('-')[1]}`);
@@ -76,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, false)
 
   button.addEventListener('click', () => {
-    console.log(clickedRewardId);
     const clickedReward = document.getElementById(`${clickedRewardId}`);
     if (clickedReward.classList.contains('video-container')) {
       const videoBtn = document.querySelector(`#video-button-${clickedReward.id.split('-')[1]}`);

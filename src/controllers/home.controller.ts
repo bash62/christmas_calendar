@@ -2,11 +2,9 @@ import path from "path";
 import { RewardType } from "../types/reward.type";
 import { app } from "../index";
 import { Route } from "../structures/route";
-import { fetchSunDate } from "../utils/fetch-sundate";
-import {encode, decode} from "../utils/base64";
+import { encode, decode } from "../utils/base64";
 
 const qr = require("qrcode");
-const axios = require('axios');
 const bcrypt = require('bcrypt');
 
 async function isAuthenticated(req, res, next) {
@@ -43,11 +41,9 @@ async function alreadyAuthenticated(req, res, next) {
 
 export default new Route("/")
   .get("/login", alreadyAuthenticated, async (req, res) => {
-    const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
-      res.render("login", {
-        theme: await fetchSunDate(+days),
-        error: false,
-      });
+    res.render("login", {
+      error: false,
+    });
   })
   .post("/login", async (req, res) => {
     const { password } = req.body;
@@ -55,30 +51,52 @@ export default new Route("/")
     const match = await bcrypt.compare( password,user.loggedInCookieHash)
 
     if(match){
-
       res.cookie("hash", encode(user.loggedInCookieHash), { maxAge: 1000 * 60 * 60 * 24, httpOnly: true });
       return res.redirect("/");
-
     }
-    else{
-      const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
 
-      return res.render("login", {
-        theme: await fetchSunDate(+days),
-        error: true,
-      });
-
-    }
+    return res.render("login", {
+      error: true,
+    });
   })
   .get("/", isAuthenticated, async (req, res) => {
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
     const user = await app.db.user.findOneBy({ id: 1});
 
-    const totalAmountChocolate = await app.db.rewards.countBy({ type: RewardType.chocolat }); 
-    const totalAmountSurprise = await app.db.rewards.countBy({ type: RewardType.surprise }); 
-
-    const reward = await app.db.rewards.findOneBy({ day: +days });
     const rewards = await app.db.rewards.find();
+    const reward = rewards.find((item) => item.day === +days);
+
+    const totalAmountChocolate = rewards.filter((item) => item.type === RewardType.chocolat).length;
+    const totalAmountSurprise = rewards.filter((item) => item.type === RewardType.surprise).length;
+
+
+    rewards.forEach(async (item) => {
+      if (item.type === RewardType.coupon && item.qrcode === null) {
+        const url = `https://${req.hostname}/coupons/${item.day}`;
+    
+        qr.toDataURL(url,{
+          margin: 2,
+          color: {
+            dark:"#000000",
+            light:"#d3d3d3"
+          }
+        }, (err, src) => {
+          item.qrcode = src;
+          app.db.rewards.save(item);
+        });
+      }
+    });
+
+    if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 25) {
+      const startDate = new Date(new Date().getDate() > 25? new Date().getFullYear() + 1 : new Date().getFullYear(), 11, 1, 0, 0, 0, 0);
+
+      const now = new Date(Date.now());
+
+      return res.render("error", {
+        error: "L'application n'est pas encore disponible",
+        days: (-(now.getTime() - startDate.getTime())) / 1000,
+      });
+    }
 
     res.render("home", {
       days,
@@ -86,31 +104,20 @@ export default new Route("/")
       amountSurprise: user.amountSurprise,
       lastseen: user.lastDayConnection,
       title: "Home",
-      theme: await fetchSunDate(+days),
       reward: reward,
       rewards: rewards,
       totalAmountChocolate: totalAmountChocolate,
       totalAmountSurprise: totalAmountSurprise,
       claimedAllChocolat: totalAmountChocolate == user.amountChocolat,
       claimedAllSurprise: totalAmountSurprise == user.amountSurprise,
+      showSnow: process.env.SHOW_SNOWFLAKE == "true",
     });
-  })
-  .get("/robot.txt", (req, res) => {
-    /*for (let i = 1; i < 26; i++) {
-      fetchSunDate(i);
-    }*/
-    res.sendFile(path.join(__dirname, '..', 'public', 'robot.txt'))
-  })
-  .get("/sitemap.xml", (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'sitemap.xml'))
-  })
-  .get("/site.webmanifest", (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'site.webmanifest'))
   })
   .post("/reedem/:day", isAuthenticated, async (req, res) => {
     const days = req.params.day;
     const user = await app.db.user.findOneBy({ id: 1});
     const reward = await app.db.rewards.findOneBy({ day: +days });
+
     if(reward.isRedeemed == false){
       reward.isRedeemed = true;
       user.amountRedeemed = user.amountRedeemed + 1;
@@ -140,97 +147,24 @@ export default new Route("/")
       totalAmountSurprise,
     })
   })
-  .get("/qrcode/:id", (req, res) => {
-    const url = "http://192.168.1.91:3005/coupons/" + req.params.id;
-    
+  .get("/coupons/:id", isAuthenticated, async (req, res) => {
+    const id = req.params.id;
+    const coupon = await app.db.rewards.findOneBy({ id: +id });
 
-    // If the input is null return "Empty Data" error
-    //if (url.length === 0) res.send("Empty Data!");
-    
-    // Let us convert the input stored in the url and return it as a representation of the QR Code image contained in the Data URI(Uniform Resource Identifier)
-    // It shall be returned as a png image format
-    // In case of an error, it will save the error inside the "err" variable and display it
-    
-    qr.toDataURL(url,{
-      margin: 2,
-      color: {
-        dark:"#000000",
-        light:"#d3d3d3"
-      }
-    }, (err, src) => {
-        if (err) res.send("Error occured");
-        res.send(src);
-    });
-}).get("/coupons/:id", isAuthenticated, async (req, res) => {
-  const id = req.params.id;
-  const coupon = await app.db.rewards.findOneBy({ id: +id });
-
-  if(coupon){
-    res.render("validate-coupon", {
-      coupon: coupon,
-    });
-  } else {
-    res.redirect("/");
-  }
-}).post("/coupons/:id", isAuthenticated, async (req, res) => {
-  const { id } = req.body;
-  const coupon = await app.db.rewards.findOneBy({ id: +id });
-  await app.db.rewards.save({
-    ...coupon,
-    isCouponClaimed: true,
-  });
-  res.redirect("/");
-});
-
-
-export async function getThemeFromApi() {
-  const date = new Date(Date.now());
-
-  const sunDate = await app.db.sunDate.findOneBy({ id: date.getDate() });
-
-  if (sunDate) {
-    if(date >= sunDate.sunrise && date < sunDate.sunset){
-      return "";
-    } else {
-      return "dark";
-    }
-  } else {
-
-    const url = process.env.IPGEOLOCATION_URL+"apiKey="+process.env.IPGEOLOCATION_API_KEY+"&location=Strasbourg";
-
-    return axios.get(url)
-      .then( async (response) => {
-
-        const { sunset, sunrise } = response.data;
-
-        const sunsetHour = sunset.split(":")[0];
-        const sunsetMinute = sunset.split(":")[1];
-
-        const sunriseHour = sunrise.split(":")[0];
-        const sunriseMinute = sunrise.split(":")[1];
-        
-        var startSunrise = new Date();
-        var startSunset= new Date();
-
-        startSunrise.setHours(sunriseHour,sunriseMinute,0); // L'heure du lever du soleil
-        startSunset.setHours(sunsetHour,sunsetMinute,0); // l'heure du coucher du soleil
-
-        await app.db.sunDate.save({
-          id: date.getDate(),
-          sunrise: startSunrise,
-          sunset: startSunset,
-        });
-
-        if(date >= startSunrise && date < startSunset){
-          return "";
-        } else {
-          return "dark";
-        }
-
-        
-      })
-      .catch(function (error) {
-        return "";
+    if(coupon){
+      res.render("validate-coupon", {
+        coupon: coupon,
       });
-  }
-}
+    } else {
+      res.redirect("/");
+    }
+  })
+  .post("/coupons/:id", isAuthenticated, async (req, res) => {
+    const { id } = req.body;
+    const coupon = await app.db.rewards.findOneBy({ id: +id });
+    await app.db.rewards.save({
+      ...coupon,
+      isCouponClaimed: true,
+    });
+    res.redirect("/");
+  });

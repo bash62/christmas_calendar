@@ -1,14 +1,10 @@
-import { Rewards } from "./entities/Rewards";
-import { User } from "./entities/User";
-
+import { Rewards } from "./entities/rewards";
+import { User } from "./entities/user";
 import { DataSource, DataSourceOptions, Repository } from "typeorm";
-import { SunDate } from "./entities/sun-date";
-import { fetchSunDate } from "../utils/fetch-sundate";
 
 export class AppDataSource extends DataSource {
     private _user: Repository<User>;
     private _rewards: Repository<Rewards>; 
-    private _sunDate: Repository<SunDate>;
  
     constructor(options: DataSourceOptions) {
         super(options);
@@ -19,7 +15,6 @@ export class AppDataSource extends DataSource {
 
         this._user = this.getRepository(User);
         this._rewards = this.getRepository(Rewards);
-        this._sunDate = this.getRepository(SunDate);
     }
 
     get user(): Repository<User> {
@@ -29,11 +24,4 @@ export class AppDataSource extends DataSource {
     get rewards(): Repository<Rewards> {
         return this._rewards;
     }
-
-    get sunDate(): Repository<SunDate> {
-        return this._sunDate;
-    }
-
-
 }
-

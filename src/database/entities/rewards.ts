@@ -35,9 +35,9 @@ export class Rewards {
     path: string
 
     @Column({
-        default: 0,
+        default: "00:10",
     })
-    duration: number
+    duration: string
 
     @Column({
         default: "",
@@ -84,4 +84,11 @@ export class Rewards {
         default: 0,
     })
     numberSurpriseOnClaimed: number
+
+    @Column({
+        nullable: true,
+        default: null,
+        type: "text"
+    })
+    qrcode: string
 }
