@@ -12,6 +12,9 @@ declare global {
       MYSQL_USER: string;
       MYSQL_PASSWORD: string;
       MYSQL_DATABASE: string;
+
+      // Debug
+      SHOW_SNOWFLAKE: string;
     }
   }
 }

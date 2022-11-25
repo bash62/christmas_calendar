@@ -7,14 +7,13 @@ services:
     stdin_open: true
     tty: true
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mago_database
-    ports:
-      - 3306:3306
-    expose:
-      - 3306
+        MYSQL_USER: 'admin'
+        MYSQL_PASSWORD: 'root-secure-password'
+        MYSQL_ROOT_PASSWORD: root-secure-password
+        MYSQL_DATABASE: mago_database
     volumes:
       - calendar-db:/var/lib/mysql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
 
   phpmyadmin:
     container_name: calendar-phpmyadmin
@@ -24,15 +23,14 @@ services:
     restart: always
     environment:
       PMA_HOST: database
-    ports:
-      - 8080:80
     depends_on:
       - database
 
   app:
-    restart: always
     container_name: calendar-app
     image: app
+    depends_on:
+     - database
     build:
       context: ../
       dockerfile: Dockerfile

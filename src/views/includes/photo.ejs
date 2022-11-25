@@ -1,6 +1,6 @@
 <section id="rewards-container-<%= reward.day %>" class="<%= isToday? 'today-container' : '' %> relative snap-always snap-center my-10 flex h-full w-full justify-center items-center px-4">
   <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward w-48 h-48 rounded-t-xl relative">
-    <img id="photo" class="w-full h-40 object-cover rounded-t-xl" src="/assets/<%= reward.path %>" alt="" srcset="">
+    <img id="photo-<%= reward.day %>" class="w-full h-40 object-cover rounded-t-xl" src="/assets/<%= reward.path %>" alt="" srcset="">
     <div class="absolute w-48 rounded-b-xl bottom-0 h-8 bg-black">
       <p class="p-2 w-full h-full text-xs text-white"><%= reward.caption %></p>
     </div>
@@ -11,15 +11,17 @@
 </section>
 
 <script>
-  const photo = document.getElementById('photo');
-  photo.addEventListener('click', (e) => {
-  const reward = e.srcElement.offsetParent;
-    if (reward.style.scale !== '0.5') {
-      document.getElementById('fullscreen-photo-container').classList.remove('hidden');
-      document.getElementById('fullscreen-photo').src = `/assets/<%= reward.path %>`;
-      document.getElementById('fullscreen-photo-caption').innerText = `<%= reward.caption %>`;
-      document.getElementById('close-button-container').classList.add('hidden');
-    }
+  document.addEventListener('DOMContentLoaded', () => {
+    const photo = document.getElementById('photo-<%= reward.day %>');
+    photo.addEventListener('click', (e) => {
+      const reward = e.srcElement.offsetParent;
+      if (+reward.style.scale == 1) {
+        document.getElementById('fullscreen-photo-container').classList.remove('hidden');
+        document.getElementById('fullscreen-photo').src = `/assets/<%= reward.path %>`;
+        document.getElementById('fullscreen-photo-caption').innerText = `<%= reward.caption %>`;
+        document.getElementById('close-button-container').classList.add('hidden');
+      }
+    })
   })
 </script>
 

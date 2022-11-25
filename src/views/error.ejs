@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <%- include('partials/meta') %>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/snow.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+
+  <script defer src="/js/utils.js"></script>
+  <script defer src="/js/loader.js"></script>
+  <script defer src="/js/animations.js"></script>
+
+<title>Le calendrier de Margaux</title>
+</head>
+
+<body class="h-screen w-full flex flex-col justify-between relative body-radial-gradient">
+
+  <div class="w-full h-full flex justify-center items-center body-radial-gradient" id="loader-container" >
+    <div class="w-48" id="loader">
+    </div>
+  </div>
+
+
+  <div id="fullscreen-photo-container" class="hidden z-50 absolute h-full w-full bg-gray-500">
+    <p id="fullscreen-photo-caption" class="bg-black w-full top-0 text-white p-2 text-center"></p>
+    <img class="h-full w-full object-cover" id="fullscreen-photo" src="" alt="">
+  </div>
+
+  <div id="close-button-container" class="hidden z-50 absolute bottom-0 w-full">
+    <img id="close-button" class="absolute rounded-full bg-white p-4 bottom-0 mb-16 left-1/2 -translate-x-1/2" src="/assets/close-button.svg" alt="">
+  </div>
+
+  <%- include('partials/header', {isHomePage: false}) %>
+
+  <main class="hidden space-y-16 flex-col items-center justify-center w-full h-full relative z-20 text-white uppercase">
+    <div class="w-3/5 flex flex-col items-center justify-center space-y-8 text-center uppercase text-3xl">
+      <img src="/assets/hedwig.svg" class="w-28" alt="" srcset="">
+      <p class="font-semibold"><%= error %></p>
+    </div>
+    
+    <section class="countdown-container w-full px-10 py-8 flex justify-evenly space-x-8 items-center">
+  
+      <div class="days-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
+        <div class="text-3xl days"></div>
+        <div class="days-label">days</div>
+      </div>
+      
+      <div class="hours-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
+        <div class="text-3xl hours"></div>
+        <div class="hours-label">hours</div>
+      </div>
+      
+      <div class="minutes-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
+        <div class="text-3xl minutes"></div>
+        <div class="minutes-label">minutes</div>
+      </div>
+      
+      <div class="seconds-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
+        <div class="text-3xl seconds"></div>
+        <div class="seconds-label">seconds</div>
+      </div>
+      
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+  <div id="snow-container"  class="hidden absolute w-full h-full overflow-hidden z-10"></div>
+  
+  <script>
+    const error = "<%= error %>";
+    const day = +"<%= days %>";
+
+document.addEventListener('DOMContentLoaded', async () => {
+      displaySnow(6);
+
+
+      const countDownClock = (number = 100, format = 'seconds') => {
+  
+        const d = document;
+        const daysElement = d.querySelector('.days');
+        const hoursElement = d.querySelector('.hours');
+        const minutesElement = d.querySelector('.minutes');
+        const secondsElement = d.querySelector('.seconds');
+        let countdown;
+        convertFormat(format);
+  
+  
+        function convertFormat(format) {
+          switch(format) {
+            case 'seconds':
+              return timer(number);
+            case 'minutes':
+              return timer(number * 60);
+              case 'hours':
+              return timer(number * 60 * 60);
+            case 'days':
+              return timer(number * 60 * 60 * 24);             
+          }
+        }
+
+        function timer(seconds) {
+          const now = Date.now();
+          const then = now + seconds * 1000;
+
+          countdown = setInterval(() => {
+            const secondsLeft = Math.round((then - Date.now()) / 1000);
+
+            if(secondsLeft <= 0) {
+              clearInterval(countdown);
+              return;
+            };
+
+            displayTimeLeft(secondsLeft);
+
+          },1000);
+        }
+
+        function displayTimeLeft(seconds) {
+          daysElement.textContent = Math.floor(seconds / 86400);
+          hoursElement.textContent = Math.floor((seconds % 86400) / 3600);
+          minutesElement.textContent = Math.floor((seconds % 86400) % 3600 / 60);
+          secondsElement.textContent = seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60;
+        }
+      }
+
+
+      /*
+        start countdown
+        enter number and format
+        days, hours, minutes or seconds
+      */
+      countDownClock(day, 'seconds');
+    });
+  </script>
+
+</body>
+</html>
