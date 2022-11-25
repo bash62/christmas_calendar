@@ -2,7 +2,6 @@ import path from "path";
 import { Logger } from "./structures/logger";
 import { Server } from "./structures/server";
 import { Colors } from "./utils/colors";
-import { fetchSunDate } from "./utils/fetch-sundate";
 
 require('dotenv').config({path: path.join(process.cwd(), '.env')})
 
