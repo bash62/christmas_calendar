@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="<%= theme %> " prefix="og: https://ogp.me/ns#">
+<html lang="en" class="dark" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,81 +20,91 @@
 <title>Le calendrier de Margaux</title>
 </head>
 
-<body class="h-screen w-full flex flex-col overflow-y-hidden justify-between relative body-radial-gradient">
+<body class="h-screen w-full flex overflow-y-hidden ">
+  <div class="hidden sm:flex sm:w-1/3 h-full w-full bg-black">
+  </div>
 
-  <div class="w-full h-full flex justify-center items-center body-radial-gradient" id="loader-container" >
-    <div class="w-48" id="loader">
-
+  <div class="sm:w-1/3 h-full w-full flex flex-col overflow-y-hidden justify-between relative body-radial-gradient">
+    <div class="w-full h-full flex justify-center items-center body-radial-gradient" id="loader-container">
+      <div class="w-48" id="loader">
+  
+      </div>
     </div>
-  </div>
-
-  <div id="fullscreen-photo-container" class="hidden z-50 absolute h-full w-full bg-gray-500">
-    <p id="fullscreen-photo-caption" class="bg-black w-full top-0 text-white p-2 text-center"></p>
-    <img class="h-full w-full object-cover" id="fullscreen-photo" src="" alt="">
-  </div>
-
-  <div id="close-button-container" class="hidden z-50 absolute bottom-0 w-full">
-    <img id="close-button" class="absolute rounded-full bg-white p-4 bottom-0 mb-16 left-1/2 -translate-x-1/2" src="/assets/close-button.svg" alt="">
-  </div>
-
-  <%- include('partials/header', {isHomePage: true}) %>
-
-  <main class="hidden flex-col w-full h-2/4 relative z-20">
-    <div id="rewards-container" class="flex h-full  py-10 w-full flex-col items-center overflow-y-scroll overflow-x-hidden snap-y snap-mandatory">
-      <% 
-      let amountC = 0;
-      let amountS = 0;
-      for (let i = 0; i < rewards.length; i++) { 
-        let reward = rewards[i];
-        let isToday = reward.day === +days;
-        console.log(rewards);
-        if (reward.day <= +days) { %>
-          <% if (reward.type === 'chocolat') { %>  
-            <% if (reward.isRedeemed || isToday) amountC += 1; %>
-            <%- include('includes/chocolat', {reward: reward, isToday: isToday, amount: amountC, total: totalAmountChocolate}) %>
-          <% } %>
-          
-          <% if (reward.type === 'message') { %>  
-            <%- include('includes/message', {reward: reward, isToday: isToday}) %>
-          <% } %>
   
-          <% if (reward.type === 'coupon') { %>  
-            <%- include('includes/coupon', {reward: reward, isToday: isToday}) %>
-          <% } %>
-          
-          <% if (reward.type === 'surprise') { %>  
-            <% if (reward.isRedeemed || isToday) amountS += 1; %>
-            <%- include('includes/surprise', {reward: reward, isToday: isToday, amount: amountS, total: totalAmountSurprise}) %>
-          <% } %>
+    <div id="fullscreen-photo-container" class="hidden z-50 absolute h-full w-full bg-gray-500">
+      <p id="fullscreen-photo-caption" class="bg-black w-full top-0 text-white p-2 text-center"></p>
+      <img class="h-full w-full object-cover" id="fullscreen-photo" src="" alt="">
+    </div>
   
-          <% if (reward.type === 'photo') { %>  
-            <%- include('includes/photo', {reward: reward, isToday: isToday}) %>
-          <% } %>
+    <div id="close-button-container" class="hidden z-50 absolute bottom-0 w-full">
+      <img id="close-button" class="absolute rounded-full bg-white p-4 bottom-0 mb-16 left-1/2 -translate-x-1/2" src="/assets/close-button.svg" alt="">
+    </div>
   
-          <% if (reward.type === 'video') { %>  
-            <%- include('includes/video', {reward: reward, isToday: isToday}) %>
-          <% } %>
-          
-          <% if (reward.type === 'rebus') { %>  
-            <%- include('includes/rebus', {reward: reward, isToday: isToday}) %>
+    <%- include('partials/header', {isHomePage: true}) %>
+  
+    <main class="hidden flex-col w-full h-2/4 relative z-20">
+      <div id="rewards-container" class="flex h-full  py-10 w-full flex-col items-center overflow-y-scroll overflow-x-hidden snap-y snap-mandatory">
+        <% 
+        let amountC = 0;
+        let amountS = 0;
+        for (let i = 0; i < rewards.length; i++) { 
+          let reward = rewards[i];
+          let isToday = reward.day === +days;
+          if (reward.day <= +days) { %>
+            <% if (reward.type === 'chocolat') { %>  
+              <% if (reward.isRedeemed || isToday) amountC += 1; %>
+              <%- include('includes/chocolat', {reward: reward, isToday: isToday, amount: amountC, total: totalAmountChocolate}) %>
+            <% } %>
+            
+            <% if (reward.type === 'message') { %>  
+              <%- include('includes/message', {reward: reward, isToday: isToday}) %>
+            <% } %>
+    
+            <% if (reward.type === 'coupon') { %>  
+              <%- include('includes/coupon', {reward: reward, isToday: isToday}) %>
+            <% } %>
+            
+            <% if (reward.type === 'surprise') { %>  
+              <% if (reward.isRedeemed || isToday) amountS += 1; %>
+              <%- include('includes/surprise', {reward: reward, isToday: isToday, amount: amountS, total: totalAmountSurprise}) %>
+            <% } %>
+    
+            <% if (reward.type === 'photo') { %>  
+              <%- include('includes/photo', {reward: reward, isToday: isToday}) %>
+            <% } %>
+    
+            <% if (reward.type === 'video') { %>  
+              <%- include('includes/video', {reward: reward, isToday: isToday}) %>
+            <% } %>
+            
+            <% if (reward.type === 'rebus') { %>  
+              <%- include('includes/rebus', {reward: reward, isToday: isToday}) %>
+            <% } %>
           <% } %>
         <% } %>
-      <% } %>
-    </div>
-
-    
-  </main>
-
-  <%- include('partials/footer') %>
-
-  <div id="snow-container"  class="hidden absolute w-full h-full overflow-hidden z-10"></div>
+      </div>
   
+      
+    </main>
+  
+    <%- include('partials/footer') %>
+  
+    <div id="snow-container"  class="hidden absolute w-full h-full overflow-hidden z-10"></div>
+    
+  </div>
+
+
+  <div class="hidden sm:flex sm:w-1/3 h-full w-full bg-black">
+  </div>
+
   <script>
+    const error = null;
     const days = "<%= days %>";
     let lastseen = "<%= lastseen %>";
     const photoUrl = "<%= reward.path %>";
     let isRewardOpen = false;
     const isRedeemed = "<%= reward.isRedeemed %>" === "true";
+    const showSnow = "<%= showSnow %>" === true;
 
     let clickedRewardId = `reward-${+days}`;
     var cookie = {
@@ -103,7 +113,6 @@
     };
 
     document.addEventListener('DOMContentLoaded', async () => {
-
       const date = document.getElementById('calendar-date');
       date.innerText = `${days}`
   
@@ -112,7 +121,7 @@
       } else {
         cookie = JSON.parse(getItem("config"));
       }
-      displaySnow(+days);
+      if (showSnow) displaySnow(+days);
     });
   </script>
   <script src="/js/index.js"></script>

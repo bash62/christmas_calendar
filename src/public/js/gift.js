@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isActived) {
         giftContainer.classList.add('hidden');
         axios.post(`reedem`).then((res) => {
-          console.log(res);
+           (res);
         })
       }
     });

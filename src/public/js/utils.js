@@ -76,6 +76,8 @@ function giftAnimation(gift, animation, container, day, isToday) {
 
   var reward = document.querySelector(`#reward-${day}`);
 
+  const rewards = document.querySelectorAll('.reward');
+
   if (isToday) {
     reward.style.scale = 1;
   }
@@ -88,7 +90,7 @@ function giftAnimation(gift, animation, container, day, isToday) {
       reward.classList.add('animate-fade-in');
       reward.style.scale = 1;
       axios.post(`reedem/${day}`).then((res) => {
-        console.log(res);
+         (res);
         if (res.data.type === 'chocolat') {
           document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberChocolateOnClaimed}/${res.data.totalAmountChocolate}`;
         } else if (res.data.type === 'surprise') {
@@ -96,6 +98,13 @@ function giftAnimation(gift, animation, container, day, isToday) {
         }
       })
       clickedRewardId = reward.id;
+
+      rewards.forEach((reward, index) => {
+        if (reward.id !== clickedRewardId) {
+          reward.style.scale = 0.5;
+          reward.parentNode.classList.remove('hidden');
+        }
+      });
     }
   });
 

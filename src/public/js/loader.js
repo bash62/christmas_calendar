@@ -7,9 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const couponsBtnsContainer = document.querySelector('#coupon-btns-validate');
 
         containers.forEach(container => {
-            container.classList.remove('hidden');
-            container.classList.add('flex');
-            container.classList.add('animate-fade-in-loader');
+            if (error === null) {
+                container.classList.remove('hidden');
+                container.classList.add('flex');
+                container.classList.add('animate-fade-in-loader');
+            } else if (container.nodeName === 'MAIN' && error !== null) {
+                container.classList.remove('hidden');
+                container.classList.add('flex');
+                container.classList.add('animate-fade-in-loader');
+            }
         });
         loader_container.classList.add('hidden');
         loader_container.classList.add('animate-fade-out-loader');

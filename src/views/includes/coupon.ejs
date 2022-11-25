@@ -8,25 +8,25 @@
       <p class="text-white font-mono font-semibold text-xl uppercase">Bon cadeau</p>
     </div>
 
-    <div class="row-start-2 row-span-1 col-span-5 col-start-1 flex flex-col items-start justify-center px-4 ">
-      <p class="text-slate-800  font-mono font-extrabold text-sm uppercase "><%= reward.description %></p>
+    <div class="row-start-2 row-span-1 col-span-5 col-start-1 flex flex-col items-start pt-2 justify-center px-4 overflow-y-visible">
+      <p class="text-slate-800 w-full font-mono font-extrabold text-xs uppercase"><%= reward.description %></p>
       <p class="text-gray-500  font-mono font-bold text-xs uppercase ">Description</p>
     </div>
 
     <div class="row-start-3 row-span-1 col-span-5 col-start-1 flex flex-col items-start justify-center px-4 ">
-      <p class="text-slate-800  font-mono font-extrabold text-sm uppercase ">Magaux</p>
+      <p class="text-slate-800  font-mono font-extrabold text-xs uppercase ">Magaux</p>
       <p class="text-gray-500  font-mono font-bold text-xs uppercase ">POUR</p>
     </div>
 
     <div class="row-start-4 row-span-1 col-span-5 col-start-1 flex items-center justify-start px-4 space-x-6 pb-1">
 
       <div class="flex flex-col items-start justify-center">
-        <p class="text-slate-800  font-mono font-extrabold text-sm uppercase ">INDEF.</p>
+        <p class="text-slate-800  font-mono font-extrabold text-xs uppercase ">INDEF.</p>
         <p class="text-gray-500  font-mono font-bold text-xs uppercase ">Validité</p>
       </div>
 
       <div class="flex flex-col items-start justify-center  ">
-        <p class="text-slate-800  font-mono font-extrabold text-sm uppercase ">00:10</p>
+        <p class="text-slate-800  font-mono font-extrabold text-xs uppercase "><%= reward.duration %></p>
         <p class="text-gray-500  font-mono font-bold text-xs uppercase ">Durée</p>
       </div>
     </div>
@@ -44,7 +44,7 @@
     </div>
 
     <div class="row-start-3 row-span-2 col-start-6 col-span-2 flex justify-center items-center pt-1 pr-4">
-      <img id="qrcode" class="w-20" src="" alt="">
+      <img id="qrcode" class="w-20" src="<%= reward.qrcode %>" alt="">
     </div>
   </div>
   <div id="gift-container-<%= reward.day %>" class="gift-container-<%= reward.day %> reward w-full h-full <%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">
@@ -56,19 +56,3 @@
 <% if (!reward.isRedeemed) { %>
   <%- include('../partials/gift', { reward: reward, isToday: isToday }) %>
 <% } %>
-
-<script>
-  axios.get(`/qrcode/<%= reward.id %>`)
-    .then(function (response) {
-      // handle success
-      const qrcode = document.getElementById('qrcode');
-      qrcode.src = response.data;
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });
-</script>

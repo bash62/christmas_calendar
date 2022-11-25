@@ -7,7 +7,6 @@ import { ServerOptions, SessionOptions } from "../types/server.type";
 import { Logger } from "./logger";
 import {AppDataSource} from "../database/data-source";
 import {Entities} from "../database/entities";
-import { fetchSunDate } from "../utils/fetch-sundate";
 export class Server {
 
   public app: express.Application;
@@ -47,7 +46,6 @@ export class Server {
     this.app.use('/assets', express.static(path.join(__dirname, '..', 'public', 'assets')))
     this.app.use('/lottie-files', express.static(path.join(__dirname, '..', 'public', 'lottie-files')))
     this.app.use('/videos', express.static(path.join(__dirname, '..', 'public', 'videos')))
-
   }
 
   start() {
