@@ -87,8 +87,8 @@ export default new Route("/")
       }
     });
 
-    if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 25) {
-      const startDate = new Date(new Date().getDate() > 25? new Date().getFullYear() + 1 : new Date().getFullYear(), 11, 1, 0, 0, 0, 0);
+    if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 26) {
+      const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() !== 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
 
       const now = new Date(Date.now());
 
@@ -148,8 +148,8 @@ export default new Route("/")
     })
   })
   .get("/coupons/:id", isAuthenticated, async (req, res) => {
-    const id = req.params.id;
-    const coupon = await app.db.rewards.findOneBy({ id: +id });
+    const day = req.params.id;
+    const coupon = await app.db.rewards.findOneBy({ day: +day });
 
     if(coupon){
       res.render("validate-coupon", {
@@ -166,5 +166,10 @@ export default new Route("/")
       ...coupon,
       isCouponClaimed: true,
     });
-    res.redirect("/");
+    res.render("validate-coupon", {
+      coupon: {
+        ...coupon,
+        isCouponClaimed: true,
+      },
+    });
   });

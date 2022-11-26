@@ -36,6 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         isLoaded = true;
-    }, Math.random() * 1000 + 2500);
+    }, Math.random() * 1000 + 3500);
 
 });

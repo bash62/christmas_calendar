@@ -32,11 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const loader = document.getElementById('loader');
 
-  bodymovin.loadAnimation({
+  const loaderAnimation = bodymovin.loadAnimation({
     wrapper: loader,
     animType: 'svg',
     loop: true,
     autoplay: true,
     path: '/lottie-files/loader.json',
   });
+  loaderAnimation.setSpeed(0.8);
 });
