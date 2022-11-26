@@ -38,32 +38,32 @@
 
   <%- include('partials/header', {isHomePage: false}) %>
 
-  <main class="hidden space-y-16 flex-col items-center justify-center w-full h-full relative z-20 text-white uppercase">
-    <div class="w-3/5 flex flex-col items-center justify-center space-y-8 text-center uppercase text-3xl">
+  <main class="hidden space-y-4 sm:space-y-16 flex-col items-center justify-center w-full h-full relative z-20 text-white uppercase">
+    <div class="w-3/5 flex flex-col items-center justify-center space-y-8 text-center uppercase">
       <img src="/assets/hedwig.svg" class="w-28" alt="" srcset="">
       <p class="font-semibold"><%= error %></p>
     </div>
     
-    <section class="countdown-container w-full px-10 py-8 flex justify-evenly space-x-8 items-center">
+    <section class="countdown-container w-full px-4 sm:px-10 py-8 flex flex-row justify-evenly space-x-2 sm:space-x-8 items-center">
   
-      <div class="days-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
-        <div class="text-3xl days"></div>
-        <div class="days-label">days</div>
+      <div class="days-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-0 sm:space-y-3 p-2 sm:p-12 w-20 h-20 sm:w-40 sm:h-40">
+        <div class="text-[20px] font-bold sm:text-3xl days"></div>
+        <div class="days-label text-[8px]">Jours</div>
       </div>
       
-      <div class="hours-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
-        <div class="text-3xl hours"></div>
-        <div class="hours-label">hours</div>
+      <div class="hours-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-0 sm:space-y-3 p-2 sm:p-12 w-20 h-20 sm:w-40 sm:h-40">
+        <div class="text-[20px] font-bold sm:text-3xl hours"></div>
+        <div class="hours-label text-[8px]">heures</div>
       </div>
       
-      <div class="minutes-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
-        <div class="text-3xl minutes"></div>
-        <div class="minutes-label">minutes</div>
+      <div class="minutes-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-0 sm:space-y-3 p-2 sm:p-12 w-20 h-20 sm:w-40 sm:h-40">
+        <div class="text-[20px] font-bold sm:text-3xl minutes"></div>
+        <div class="minutes-label text-[8px]">minutes</div>
       </div>
       
-      <div class="seconds-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-3 p-12 w-40 h-40">
-        <div class="text-3xl seconds"></div>
-        <div class="seconds-label">seconds</div>
+      <div class="seconds-container border-4 border-white rounded-full border-opacity-50 flex flex-col items-center justify-center space-y-0 sm:space-y-3 p-2 sm:p-12 w-20 h-20 sm:w-40 sm:h-40">
+        <div class="text-[20px] font-bold sm:text-3xl seconds"></div>
+        <div class="seconds-label text-[8px]">secondes</div>
       </div>
       
     </section>

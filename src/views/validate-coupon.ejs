@@ -39,13 +39,13 @@
 
   
   <form method="POST" action="" id="coupon-btns-validate" class="text-2xl font-semibold text-white absolute w-full bottom-0 z-50 mb-32 hidden justify-center items-center space-x-6">
-    <a class="px-6 py-3 rounded-lg bg-blue-600" href="/">Retour</a>
+    <a class="px-6 py-3 rounded-lg bg-[#80b0ff]" href="/">Retour</a>
     <input type="hidden" name="id" value="<%= coupon.id %>">
     <% if (!coupon.isCouponClaimed) { %>
       <button class="px-6 py-3 rounded-lg bg-[#16a34a]" type="submit">Valider</button>
     <% } %>
   </form>
-
+  <% console.log(coupon) %>
   <%- include('partials/header', {isHomePage: false}) %>
 
   <main class="hidden flex-col items-center justify-center w-full h-2/4 relative z-20 ">
