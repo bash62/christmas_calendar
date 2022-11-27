@@ -8,6 +8,18 @@ const qr = require("qrcode");
 const bcrypt = require('bcrypt');
 
 async function isAuthenticated(req, res, next) {
+
+  if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 27) {
+    const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() == 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
+
+    const now = new Date(Date.now());
+
+    return res.render("error", {
+      error: "Tu dois encore être patiente !! 🎅🎄😊",
+      days: (-(now.getTime() - startDate.getTime())) / 1000,
+    });
+  }
+
   const user = await app.db.user.findOneBy({ id: 1});
   const cookie = req.headers.cookie
   let isAuth = false;
@@ -60,6 +72,7 @@ export default new Route("/")
     });
   })
   .get("/", isAuthenticated, async (req, res) => {
+    
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
     const user = await app.db.user.findOneBy({ id: 1});
 
@@ -86,17 +99,6 @@ export default new Route("/")
         });
       }
     });
-
-    if (new Date(Date.now()).getMonth() !== 11 || new Date(Date.now()).getDate() > 27) {
-      const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() == 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
-
-      const now = new Date(Date.now());
-
-      return res.render("error", {
-        error: "Tu dois encore être patiente !! 🎅🎄😊",
-        days: (-(now.getTime() - startDate.getTime())) / 1000,
-      });
-    }
 
     res.render("home", {
       days,
