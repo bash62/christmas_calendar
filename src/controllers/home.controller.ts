@@ -87,13 +87,13 @@ export default new Route("/")
       }
     });
 
-    if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 26) {
-      const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() !== 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
+    if (new Date(Date.now()).getMonth() !== 11 || new Date(Date.now()).getDate() > 27) {
+      const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() == 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
 
       const now = new Date(Date.now());
 
       return res.render("error", {
-        error: "L'application n'est pas encore disponible",
+        error: "Tu dois encore être patiente !! 🎅🎄😊",
         days: (-(now.getTime() - startDate.getTime())) / 1000,
       });
     }
