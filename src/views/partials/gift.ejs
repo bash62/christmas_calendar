@@ -4,6 +4,7 @@
     const gift = document.querySelector(`#lottie-gift-${day}`);
     const giftContainer = document.querySelector(`#gift-container-${day}`);
     const reward = document.getElementById(`reward-${day}`);
+    const rewards = document.querySelectorAll('.reward');
 
     const animation = lottie.loadAnimation({
       container: gift,
@@ -14,17 +15,70 @@
     });
 
     let isClicked = false;
+    let isFinished = false;
+    let isActived = false;
 
     animation.addEventListener('DOMLoaded', () => {
       animation.playSegments([8, 44], true);
       animation.play();
     });
 
-    
+    animation.addEventListener('animationend', () => {
+      console.log('Animation End');
+    })
+
+    animation.addEventListener('enterFrame', (e) => {
+      const frame = Math.floor(e.currentTime);
+
+      if (isClicked && giftContainer.style.scale == 1 && !isFinished) {
+        console.log('frame', frame);
+        if (frame <= 0 && isActived && !isFinished) {
+          animation.pause()
+
+          gift.classList.add('animate-fade-out');
+          giftContainer.classList.add('hidden');
+
+          document.querySelector('#rewards-container').classList.remove('hidden');
+          document.querySelector('#rewards-container').classList.add('flex');
+          document.querySelector('#rewards-container').classList.add('animate-fade-in');
+
+          document.getElementById('close-button-container').classList.remove('hidden');
+
+          reward.classList.remove('hidden');
+          reward.classList.add('flex')
+          reward.classList.add('animate-fade-in');
+          reward.style.scale = 1;
+
+          document.querySelectorAll(['header', 'footer']).forEach(c => {
+            c.classList.add('blur-sm');
+          });
+
+          clickedRewardId = reward.id;
+
+          rewards.forEach((reward, index) => {
+            if (reward.id !== clickedRewardId) {
+              reward.style.scale = 0.5;
+              reward.parentNode.classList.remove('hidden');
+            }
+          });
+
+          reedemReward(day);
+        } else if (frame <= 8 && isActived && !isFinished) {
+          animation.setSpeed(0.2)
+        } else if (frame <= 16 && isActived && !isFinished) {
+          animation.setSpeed(0.5)
+        }
+      }
+    });
+
     giftContainer.addEventListener('click', (e) => {
       if (giftContainer.style.scale == 1 && isLoaded && !isClicked) {
-        giftAnimation(gift, animation, giftContainer, +"<%= reward.day %>", "<%= isToday %>" == "true");
+        animation.playSegments([2, 44], true);
+        animation.setDirection(-1);
+        animation.play();
+
         isClicked = true;
+        isActived = true;
       }
     })
   });

@@ -39,9 +39,7 @@ async function alreadyAuthenticated(req, res, next) {
   const user = await app.db.user.findOneBy({ id: 1});
   const cookie = req.headers.cookie
   let isAuth = false;
-  if (!cookie) isAuth = false;
-
-  cookie.split(";").map((item) => {
+  if (cookie) cookie.split(";").map((item) => {
     const [key, value] = item.replace(/\s/g,"").split("=");
     if(key == "hash" && decode(value) === user.loggedInCookieHash){
       isAuth = true;
@@ -120,7 +118,7 @@ export default new Route("/")
     const user = await app.db.user.findOneBy({ id: 1});
     const reward = await app.db.rewards.findOneBy({ day: +days });
 
-    if(reward.isRedeemed == false){
+    if(!reward.isRedeemed){
       reward.isRedeemed = true;
       user.amountRedeemed = user.amountRedeemed + 1;
 
