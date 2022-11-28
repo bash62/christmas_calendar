@@ -8,6 +8,18 @@ const qr = require("qrcode");
 const bcrypt = require('bcrypt');
 
 async function isAuthenticated(req, res, next) {
+
+  if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 27) {
+    const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() == 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
+
+    const now = new Date(Date.now());
+
+    return res.render("error", {
+      error: "Tu dois encore être patiente !! 🎅🎄😊",
+      days: (-(now.getTime() - startDate.getTime())) / 1000,
+    });
+  }
+
   const user = await app.db.user.findOneBy({ id: 1});
   const cookie = req.headers.cookie
   let isAuth = false;
@@ -60,8 +72,7 @@ export default new Route("/")
     });
   })
   .get("/", isAuthenticated, async (req, res) => {
-    console.log(req)
-
+    
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
     const user = await app.db.user.findOneBy({ id: 1});
 
@@ -89,17 +100,6 @@ export default new Route("/")
       }
     });
 
-    if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 26) {
-      const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() !== 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
-
-      const now = new Date(Date.now());
-
-      return res.render("error", {
-        error: "L'application n'est pas encore disponible",
-        days: (-(now.getTime() - startDate.getTime())) / 1000,
-      });
-    }
-
     res.render("home", {
       days,
       amountChocolate: user.amountChocolat,
@@ -121,7 +121,7 @@ export default new Route("/")
     const reward = await app.db.rewards.findOneBy({ day: +days });
 
     if(reward.isRedeemed == false){
-      reward.isRedeemed = false;
+      reward.isRedeemed = true;
       user.amountRedeemed = user.amountRedeemed + 1;
 
       switch(reward.type){
@@ -174,22 +174,4 @@ export default new Route("/")
         isCouponClaimed: true,
       },
     });
-  })
-  .get("/manifest.json", (req, res) => {
-    res.json({
-      name: "Advent Calendar",
-      short_name: "Advent Calendar",
-      description: "Advent Calendar",
-      start_url: "/",
-      display: "standalone",
-      background_color: "#000000",
-      theme_color: "#000000",
-      icons: [
-        {
-          src: "/asstes/sock.svg",
-          sizes: "512x512",
-          type: "image/svg",
-        },
-      ],
-    });
-  })
+  });
