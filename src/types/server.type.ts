@@ -4,6 +4,7 @@ export interface ServerOptions {
 }
 
 export interface SessionOptions {
+  sameSite: boolean;
   secret: string;
   cookie: {
     maxAge: number;

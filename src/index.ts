@@ -8,13 +8,14 @@ require('dotenv').config({path: path.join(process.cwd(), '.env')})
 export const app = new Server({
   port: +process.env.PORT,
   session: {
+    sameSite: false,
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 31
     },
-    saveUninitialized: true,
+    saveUninitialized: false,
     name: 'sessionId',
-    resave: true
+    resave: false
   }
 });
 app.start();

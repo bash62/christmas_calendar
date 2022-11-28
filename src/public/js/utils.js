@@ -66,10 +66,9 @@ function updateSnow(day) {
 }
 
 function giftAnimation(gift, animation, container, day, isToday) {
-
-  let isActived = true;
-  let isFirstLoop = false;
-  let frameCounter = 0;
+  animation.playSegments([2, 44], true);
+  animation.setDirection(-1);
+  animation.play();
 
   const rewardsContainer = document.querySelector('#rewards-container');
   const rewardsCount = document.querySelectorAll('.reward').length;
@@ -78,12 +77,19 @@ function giftAnimation(gift, animation, container, day, isToday) {
 
   const rewards = document.querySelectorAll('.reward');
 
-  if (isToday) {
-    reward.style.scale = 1;
-  }
+  let isFirstLoop = false;
 
-  gift.addEventListener('animationend', () => {
+  let isActived = true;
+
+  let frameCounter = 0;
+
+  if (isToday) reward.style.scale = 1;
+
+  animation.addEventListener('animationend', () => {
+    if (!isActived) console.log('animationend 1');
+
     if (isActived) {
+      console.log('animationend 2');
       container.classList.add('hidden');
       reward.classList.remove('hidden');
       reward.classList.add('flex')

@@ -60,6 +60,8 @@ export default new Route("/")
     });
   })
   .get("/", isAuthenticated, async (req, res) => {
+    console.log(req)
+
     const days = new Date(Date.now()).getDate().toString().padStart(2, "0");
     const user = await app.db.user.findOneBy({ id: 1});
 
@@ -119,7 +121,7 @@ export default new Route("/")
     const reward = await app.db.rewards.findOneBy({ day: +days });
 
     if(reward.isRedeemed == false){
-      reward.isRedeemed = true;
+      reward.isRedeemed = false;
       user.amountRedeemed = user.amountRedeemed + 1;
 
       switch(reward.type){
@@ -172,4 +174,22 @@ export default new Route("/")
         isCouponClaimed: true,
       },
     });
-  });
+  })
+  .get("/manifest.json", (req, res) => {
+    res.json({
+      name: "Advent Calendar",
+      short_name: "Advent Calendar",
+      description: "Advent Calendar",
+      start_url: "/",
+      display: "standalone",
+      background_color: "#000000",
+      theme_color: "#000000",
+      icons: [
+        {
+          src: "/asstes/sock.svg",
+          sizes: "512x512",
+          type: "image/svg",
+        },
+      ],
+    });
+  })

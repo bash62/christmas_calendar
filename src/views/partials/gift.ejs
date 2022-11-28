@@ -13,18 +13,18 @@
       path: '/lottie-files/gift.json'
     });
 
+    let isClicked = false;
+
     animation.addEventListener('DOMLoaded', () => {
       animation.playSegments([8, 44], true);
       animation.play();
     });
 
+    
     giftContainer.addEventListener('click', (e) => {
-      if (giftContainer.style.scale == 1 && isLoaded) {
+      if (giftContainer.style.scale == 1 && isLoaded && !isClicked) {
         giftAnimation(gift, animation, giftContainer, +"<%= reward.day %>", "<%= isToday %>" == "true");
-        
-        animation.playSegments([2, 44], true);
-        animation.setDirection(-1);
-        animation.play();
+        isClicked = true;
       }
     })
   });
