@@ -65,83 +65,12 @@ function updateSnow(day) {
   
 }
 
-function giftAnimation(gift, animation, container, day, isToday) {
-  animation.playSegments([2, 44], true);
-  animation.setDirection(-1);
-  animation.play();
-
-  const rewardsContainer = document.querySelector('#rewards-container');
-  const rewardsCount = document.querySelectorAll('.reward').length;
-
-  var reward = document.querySelector(`#reward-${day}`);
-
-  const rewards = document.querySelectorAll('.reward');
-
-  let isFirstLoop = false;
-
-  let isActived = true;
-
-  let frameCounter = 0;
-
-  if (isToday) reward.style.scale = 1;
-
-  animation.addEventListener('animationend', () => {
-    if (!isActived) console.log('animationend 1');
-
-    if (isActived) {
-      console.log('animationend 2');
-      container.classList.add('hidden');
-      reward.classList.remove('hidden');
-      reward.classList.add('flex')
-      reward.classList.add('animate-fade-in');
-      reward.style.scale = 1;
-      axios.post(`reedem/${day}`).then((res) => {
-         (res);
-        if (res.data.type === 'chocolat') {
-          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberChocolateOnClaimed}/${res.data.totalAmountChocolate}`;
-        } else if (res.data.type === 'surprise') {
-          document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberSurpriseOnClaimed}/${res.data.totalAmountSurprise}`;
-        }
-      })
-      clickedRewardId = reward.id;
-
-      rewards.forEach((reward, index) => {
-        if (reward.id !== clickedRewardId) {
-          reward.style.scale = 0.5;
-          reward.parentNode.classList.remove('hidden');
-        }
-      });
-    }
-  });
-
-  animation.addEventListener('enterFrame', (e) => {
-    if(Math.floor(e.currentTime) == 41 && isActived){
-      frameCounter++;
-      if(frameCounter == 3){
-        frameCounter++;
-      };
-      if(frameCounter == 4){
-        rewardsContainer.classList.remove('hidden');
-        rewardsContainer.classList.add('flex');
-        rewardsContainer.classList.add('animate-fade-in');
-
-        const buttonContainer = document.getElementById('close-button-container');
-        buttonContainer.classList.remove('hidden');
-
-        const containers = document.querySelectorAll(['header', 'footer']);
-        containers.forEach(c => {
-          c.classList.add('blur-sm');
-        });
-        gift.classList.add('animate-fade-out');
-
-        isFirstLoop = true;
-        animation.stop();
-      };
-    }
-    if (Math.floor(e.currentTime) <= 10 && isActived) {
-      animation.setSpeed(0.5);
-    } else if (Math.floor(e.currentTime) <= 5 && isActived) {
-      animation.setSpeed(0.2);
-    }
-  });
+function reedemReward(day) {
+  axios.post(`reedem/${day}`).then((res) => {
+   if (res.data.type === 'chocolat') {
+     document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberChocolateOnClaimed}/${res.data.totalAmountChocolate}`;
+   } else if (res.data.type === 'surprise') {
+     document.getElementById(`amount-${day}`).innerHTML = `${res.data.numberSurpriseOnClaimed}/${res.data.totalAmountSurprise}`;
+   }
+ })
 }
