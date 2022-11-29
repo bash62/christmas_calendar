@@ -104,7 +104,6 @@
     const photoUrl = "<%= reward.path %>";
     let isRewardOpen = false;
     const isRedeemed = "<%= reward.isRedeemed %>" === "true";
-    const showSnow = "<%= showSnow %>" === true;
 
     let clickedRewardId = `reward-${+days}`;
     var cookie = {
@@ -121,7 +120,7 @@
       } else {
         cookie = JSON.parse(getItem("config"));
       }
-      if (showSnow) displaySnow(+days);
+      displaySnow(+days);
     });
   </script>
   <script src="/js/index.js"></script>

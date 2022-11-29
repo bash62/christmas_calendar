@@ -30,6 +30,12 @@ npm run build
 
 ## Usage
 
+To run the project in development mode, run:
+
+```sh
+npm run start:dev
+```
+
 ```sh
 npm run start
 ```

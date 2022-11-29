@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       reward.addEventListener('click', () => {
         if (reward.style.scale === '0.5') {
           clickedRewardId = reward.id;
+          console.log(clickedRewardId);
           reward.classList.add('animate-scale-in');
           reward.classList.remove('animate-scale-out');
           reward.classList.add('clicked-reward');
@@ -95,6 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
     isRewardOpen = false;
     rewardContainer.classList.remove('overflow-y-hidden');
     rewardContainer.classList.add('overflow-y-scroll');
+
+    rewards.forEach((reward, index) => {
+      if (reward.id !== clickedRewardId) {
+        reward.style.scale = 0.5;
+        reward.parentNode.classList.remove('hidden');
+      }
+    })
   });
 
   fullscreenContainer.addEventListener('click', () => {

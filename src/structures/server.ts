@@ -54,12 +54,6 @@ export class Server {
 
     this.app.use(homeController.path, homeController.router);
 
-    /*this.app.get('*', function(req, res, next) {
-      let err = new Error("Page Doesn't Exist");
-      res.statusCode = 404;
-      next(err);
-    });*/
-
     this.app.listen(this.port, () => {
       Logger.success(`Server started on port ${this.port}`);
     });

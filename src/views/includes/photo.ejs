@@ -2,7 +2,7 @@
   <div id="reward-<%= reward.day %>" class="<%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'flex' : 'hidden' %> reward w-48 h-48 rounded-t-xl relative">
     <img id="photo-<%= reward.day %>" class="w-full h-40 object-cover rounded-t-xl" src="/assets/<%= reward.path %>" alt="" srcset="">
     <div class="absolute w-48 rounded-b-xl bottom-0 h-8 bg-black">
-      <p class="p-2 w-full h-full text-xs text-white"><%= reward.caption %></p>
+      <p class="p-2 w-full h-full text-xs text-white truncate"><%= reward.caption %></p>
     </div>
   </div>
   <div id="gift-container-<%= reward.day %>" class="w-full h-full reward <%= isToday? 'today-reward' : '' %> <%= reward.isRedeemed? 'hidden' : 'flex' %> justify-center items-center">

@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 
 async function isAuthenticated(req, res, next) {
 
-  if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 27) {
+  if (new Date(Date.now()).getMonth() !== 10 || new Date(Date.now()).getDate() > 29) {
     const startDate = new Date(new Date().getDate() > 26 && new Date().getMonth() == 10? new Date().getFullYear() : new Date().getFullYear() + 1 , 11, 1, 0, 0, 0, 0);
 
     const now = new Date(Date.now());
@@ -110,7 +110,6 @@ export default new Route("/")
       totalAmountSurprise: totalAmountSurprise,
       claimedAllChocolat: totalAmountChocolate == user.amountChocolat,
       claimedAllSurprise: totalAmountSurprise == user.amountSurprise,
-      showSnow: process.env.SHOW_SNOWFLAKE == "true",
     });
   })
   .post("/reedem/:day", isAuthenticated, async (req, res) => {
@@ -119,7 +118,7 @@ export default new Route("/")
     const reward = await app.db.rewards.findOneBy({ day: +days });
 
     if(!reward.isRedeemed){
-      reward.isRedeemed = true;
+      reward.isRedeemed = false;
       user.amountRedeemed = user.amountRedeemed + 1;
 
       switch(reward.type){
@@ -151,7 +150,7 @@ export default new Route("/")
     const day = req.params.id;
     const coupon = await app.db.rewards.findOneBy({ day: +day });
 
-    if(coupon){
+    if(coupon && coupon.isRedeemed){
       res.render("validate-coupon", {
         coupon: coupon,
       });

@@ -31,7 +31,6 @@
       const frame = Math.floor(e.currentTime);
 
       if (isClicked && giftContainer.style.scale == 1 && !isFinished) {
-        console.log('frame', frame);
         if (frame <= 0 && isActived && !isFinished) {
           animation.pause()
 
@@ -54,13 +53,6 @@
           });
 
           clickedRewardId = reward.id;
-
-          rewards.forEach((reward, index) => {
-            if (reward.id !== clickedRewardId) {
-              reward.style.scale = 0.5;
-              reward.parentNode.classList.remove('hidden');
-            }
-          });
 
           reedemReward(day);
         } else if (frame <= 8 && isActived && !isFinished) {
