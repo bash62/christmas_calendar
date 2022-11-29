@@ -110,3 +110,6 @@ dist/
 ./src/public/css/style.css
 
 ./src/public/assets/photos/*
+
+question.md
+question*
