@@ -105,6 +105,7 @@ export default new Route("/")
       lastseen: user.lastDayConnection,
       title: "Home",
       reward: reward,
+      totalReedemed: rewards.filter((item) => item.isRedeemed).length,
       rewards: rewards,
       totalAmountChocolate: totalAmountChocolate,
       totalAmountSurprise: totalAmountSurprise,

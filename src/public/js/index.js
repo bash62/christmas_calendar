@@ -87,15 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     containers.forEach(container => {
-      container.classList.remove('blur-sm');
+      container.classList.toggle('blur-sm');
     });
+
     buttonContainer.classList.add('hidden');
     clickedReward.classList.add('animate-scale-out');
     clickedReward.classList.remove('animate-scale-in');
     clickedReward.style.scale = 0.5;
     isRewardOpen = false;
-    rewardContainer.classList.remove('overflow-y-hidden');
-    rewardContainer.classList.add('overflow-y-scroll');
 
     rewards.forEach((reward, index) => {
       if (reward.id !== clickedRewardId) {
@@ -103,6 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
         reward.parentNode.classList.remove('hidden');
       }
     })
+    rewardContainer.classList.remove('overflow-y-hidden');
+    rewardContainer.classList.add('overflow-y-scroll');
+
+    if (clickedReward.classList.contains('today-reward')) {
+      const rewardsCount = document.querySelectorAll('.reward').length;
+      const step = rewardContainer.scrollHeight / rewardsCount;
+      rewardContainer.scrollTo(0, step * rewardsCount);
+    }
   });
 
   fullscreenContainer.addEventListener('click', () => {

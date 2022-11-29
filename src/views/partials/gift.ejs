@@ -5,6 +5,7 @@
     const giftContainer = document.querySelector(`#gift-container-${day}`);
     const reward = document.getElementById(`reward-${day}`);
     const rewards = document.querySelectorAll('.reward');
+    const buttonContainer = document.querySelector(`#close-button-container`);
 
     const animation = lottie.loadAnimation({
       container: gift,
@@ -53,6 +54,7 @@
           });
 
           clickedRewardId = reward.id;
+          buttonContainer.classList.remove('hidden');
 
           reedemReward(day);
         } else if (frame <= 8 && isActived && !isFinished) {
@@ -68,6 +70,7 @@
         animation.playSegments([2, 44], true);
         animation.setDirection(-1);
         animation.play();
+        buttonContainer.classList.add('hidden');
 
         isClicked = true;
         isActived = true;

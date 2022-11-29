@@ -93,6 +93,10 @@
     
   </div>
 
+  <div id="gifts-container" class="hidden w-full h-4 bottom-0 left-0 absolute overflow-hidden px-3">
+
+  </div>
+
 
   <div class="hidden sm:flex sm:w-1/3 h-full w-full bg-black">
   </div>
@@ -104,6 +108,7 @@
     const photoUrl = "<%= reward.path %>";
     let isRewardOpen = false;
     const isRedeemed = "<%= reward.isRedeemed %>" === "true";
+    const totalReedemed = +"<%= totalReedemed %>";
 
     let clickedRewardId = `reward-${+days}`;
     var cookie = {
@@ -121,6 +126,8 @@
         cookie = JSON.parse(getItem("config"));
       }
       displaySnow(+days);
+
+     
     });
   </script>
   <script src="/js/index.js"></script>

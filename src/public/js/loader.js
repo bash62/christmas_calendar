@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const snowContainer = document.getElementById('snow-container');
         const rewardsContainer = document.querySelector('#rewards-container');
         const couponsBtnsContainer = document.querySelector('#coupon-btns-validate');
+        const giftsContainer = document.querySelector('#gifts-container');
 
         containers.forEach(container => {
             if (error === null) {
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loader_container.classList.add('animate-fade-out-loader');
 
         snowContainer.classList.remove('hidden');
+        giftsContainer.classList.remove('hidden');
 
         if (rewardsContainer) {
             rewardsContainer.classList.remove('overflow-y-hidden');
